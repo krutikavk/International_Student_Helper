@@ -1,0 +1,68 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.4.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		//SONARQUEBE DEPENDENCY
+		classpath ( "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1")
+		
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin:'org.sonarqube' 
+apply plugin: 'jacoco'
+
+
+// Task For Packaging Project into JAR File
+// If Version is not provide the task will create a JAR default version 1.0.0
+bootJar{
+	baseName = 'CMPE_180B_ISS_Helper'
+	if(version==null)
+		version =' 1.0.0'
+	else
+		version= version
+}
+
+repositories {
+	mavenCentral()
+}	
+
+
+sourceCompatibility =1.8
+targetCompatibility =1.8
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	
+	// APACHE LOGGER JAR
+	compile('log4j:log4j:1.2.17')
+	// SWAGGER JAR
+	compile('io.springfox:springfox-swagger2:2.9.2')
+	compile('io.springfox:springfox-swagger-ui:2.9.2')
+	
+	// JAVA JDBC JAR
+	
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
+	compile('com.microsoft.sqlserver:mssql-jdbc')
+	
+	
+	
+	
+
+	
+}
+
+task Wrapper(type: Wrapper) {
+  	gradleVersion = '4.0'
+    distributionUrl = 'https://services.gradle.org/distributions/gradle-4.0-all.zip'
+}
