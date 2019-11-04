@@ -2,6 +2,7 @@ package com.isshelper.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +22,7 @@ public class IssHelperController {
 
 	@RequestMapping(path = "/signUp")
 	@ResponseBody
+	@PostMapping
 	public ResponseEntity<IssHelperStudentSignUpOutputVO> signUp(
 			@RequestBody IssHelperStudentSignUpInputVO issHelperStudentSignUpInputVO) {
 
@@ -31,6 +33,10 @@ public class IssHelperController {
 		}
 		return null;
 
+	}
+	@RequestMapping("/check")
+	public String checkApplication() {
+		return "Hello World";
 	}
 
 }
