@@ -61,4 +61,9 @@ public class University {
 	public int getU_Zip () {
 		return U_Zip;
 	}
+	
+	public String toString() 
+    { 
+        return "University ID: " + U_Id + ", University Name: " + U_Name + ", Address: " + U_State + " " + U_City + " " + U_Street + " " + U_Zip; 
+    } 
 }
