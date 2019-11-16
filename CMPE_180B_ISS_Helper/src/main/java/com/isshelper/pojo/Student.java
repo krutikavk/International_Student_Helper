@@ -49,4 +49,10 @@ public class Student {
 	public void setS_University(int s_University) {
 		S_University = s_University;
 	}
+	
+	public String toString() 
+    { 
+        return "Student ID: " + S_Id + ", Name: " + S_Name + ", Phone: " + S_Phone + ", University: " + S_University; 
+    } 
+	
 }
