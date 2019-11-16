@@ -6,15 +6,19 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.isshelper.exception.IssHelperException;
+import com.isshelper.output.IssHelperStudentSignUpOutputVO;
 import com.isshelper.pojo.Student;
+import com.isshelper.utils.ApplicationsConstants;
 
 @Repository
 public class IssHelperDaoImplementation {
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	@Autowired
+	IssHelperStudentSignUpOutputVO issHelperStudentSignUpOutputVO;
 
-	public void signUp(Student student) throws IssHelperException {
+	public IssHelperStudentSignUpOutputVO signUp(Student student) throws IssHelperException {
 
 		try {
 			String university = "select U_Id from StudentHelper.dbo.University where StudentHelper.dbo.University.U_Name= "
@@ -30,6 +34,8 @@ public class IssHelperDaoImplementation {
 		} catch (DataAccessException e) {
 			throw new IssHelperException("Something went wrong while connecting to DB ");
 		}
+		issHelperStudentSignUpOutputVO.setMessage(ApplicationsConstants.SUCCESS);
+		return issHelperStudentSignUpOutputVO;
 
 	}
 }
