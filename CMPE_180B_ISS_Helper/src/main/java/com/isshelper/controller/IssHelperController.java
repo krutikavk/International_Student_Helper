@@ -20,23 +20,28 @@ public class IssHelperController {
 	@Autowired
 	IssHelperService issHelperService;
 
-	@RequestMapping(path = "/signUp")
+	@RequestMapping(path = "/StudentSignUp")
 	@ResponseBody
 	@PostMapping
-	public ResponseEntity<IssHelperStudentSignUpOutputVO> signUp(
+	public ResponseEntity<IssHelperStudentSignUpOutputVO> studentSignUp(
 			@RequestBody IssHelperStudentSignUpInputVO issHelperStudentSignUpInputVO) {
 
 		try {
 			issHelperService.signUp(issHelperStudentSignUpInputVO);
 		} catch (IssHelperException e) {
 			System.out.println(e.getMessage());
+
+			return null;
 		}
 		return null;
 
 	}
-	@RequestMapping("/check")
-	public String checkApplication() {
-		return "Hello World";
+
+	@RequestMapping("/RideProviderSignup")
+	public String rideProviderSignUp() {
+
+		return "";
+
 	}
 
 }
