@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isshelper.exception.IssHelperException;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
+import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
 import com.isshelper.output.IssHelperOutput;
@@ -78,5 +79,21 @@ public class IssHelperController {
 		}
 
 	}
+	
+	@RequestMapping("/ProviderRidePost")
+	public ResponseEntity<IssHelperOutput> providerRidePost(
+			@RequestBody IssHelperRidesPostedByProvider issHelperRidesPostedByProvider) {
+		ResponseEntity<IssHelperOutput> responseEntity;
+		try {
+			issHelperOutput = issHelperService.providerRidePost(issHelperRidesPostedByProvider);
+			responseEntity = new ResponseEntity<IssHelperOutput>((IssHelperOutput) issHelperOutput, HttpStatus.OK);
+			return responseEntity;
+		} catch (IssHelperException e) {
+			// TODO: handle exception
+			issHelperOutput.setMessage(e.getMessage());
+			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.FORBIDDEN);
+			return responseEntity;
+		}
 
+	}
 }

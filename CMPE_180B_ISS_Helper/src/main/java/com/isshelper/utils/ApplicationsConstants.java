@@ -8,5 +8,5 @@ public final class ApplicationsConstants {
 	public static final String RIDER_SIGNUP_FAILURE = "Rider SignUp failed";
 	public static final String STUDENT_REQUEST_RIDE_FAILURE = "Student ride request Failed";
 	public static final String ACTIVE_PROFILE = "SPRING_PROFILES_ACTIVE";
-
+	public static final String RIDE_PROVIDER_POST_FAILURE = "Ride Post failed";
 }

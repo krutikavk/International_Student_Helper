@@ -7,11 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import com.isshelper.exception.IssHelperException;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
+import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
 import com.isshelper.output.IssHelperOutput;
 import com.isshelper.pojo.Ride;
 import com.isshelper.pojo.RideProvider;
+import com.isshelper.pojo.Rides_Posted_By_Provider;
 import com.isshelper.pojo.Rides_Requested_By_Student;
 import com.isshelper.pojo.Student;
 import com.isshelper.utils.ApplicationsConstants;
@@ -31,6 +33,8 @@ public class IssHelperDaoImplementation {
 	Ride ride;
 	@Autowired
 	Rides_Requested_By_Student rides_Requested_By_Student;
+	@Autowired
+	Rides_Posted_By_Provider rides_Posted_By_Provider;
 
 	public IssHelperOutput studentSignUp(IssHelperStudentSignUpInputVO issHelperStudentSignUpInputVO)
 			throws IssHelperException {
@@ -102,6 +106,32 @@ public class IssHelperDaoImplementation {
 
 		} catch (Exception e) {
 			throw new IssHelperException(ApplicationsConstants.STUDENT_REQUEST_RIDE_FAILURE);
+		}
+		return issHelperOutput;
+	}
+	
+	
+	public IssHelperOutput providerRidePost(IssHelperRidesPostedByProvider issHelperRidesPostedByProvider)
+			throws IssHelperException {
+		try {
+			rides_Posted_By_Provider.setRPBP_Drivers_License(issHelperRidesPostedByProvider.getDriversLicense());
+			rides_Posted_By_Provider.setRPBP_Date(issHelperRidesPostedByProvider.getDate());
+			rides_Posted_By_Provider.setRPBP_Time(issHelperRidesPostedByProvider.getTime());
+			rides_Posted_By_Provider.setRPBP_From(issHelperRidesPostedByProvider.getFrom());
+			rides_Posted_By_Provider.setRPBP_Current(issHelperRidesPostedByProvider.getCurrent());
+			rides_Posted_By_Provider.setRPBP_Total(issHelperRidesPostedByProvider.getTotal());
+			
+			String insertRidePostedByProvider = "insert into StudentHelper.dbo.Rides_Posted_By_Provider values ('" +
+			rides_Posted_By_Provider.getRPBP_Drivers_License() + "','" + rides_Posted_By_Provider.getRPBP_Date() + "','" +
+					rides_Posted_By_Provider.getRPBP_Time() + "','" + rides_Posted_By_Provider.getRPBP_From() + "', " + 
+			rides_Posted_By_Provider.getRPBP_Current() + "," + rides_Posted_By_Provider.getRPBP_Total() + ")";
+			
+			jdbcTemplate.execute(insertRidePostedByProvider);
+
+			issHelperOutput.setMessage(ApplicationsConstants.SUCCESS);
+
+		} catch (Exception e) {
+			throw new IssHelperException(ApplicationsConstants.RIDE_PROVIDER_POST_FAILURE);
 		}
 		return issHelperOutput;
 	}

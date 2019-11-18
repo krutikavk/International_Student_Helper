@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.isshelper.dao.IssHelperDaoImplementation;
 import com.isshelper.exception.IssHelperException;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
+import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
 import com.isshelper.output.IssHelperOutput;
@@ -39,6 +40,13 @@ public class IssHelperService {
 			throws IssHelperException {
 
 		return issHelperDaoImplementation.studentRideRequest(issHelperStudentRideRequest);
+
+	}
+	
+	public IssHelperOutput providerRidePost(IssHelperRidesPostedByProvider issHelperRidesPostedByProvider)
+			throws IssHelperException {
+		
+		return issHelperDaoImplementation.providerRidePost(issHelperRidesPostedByProvider);
 
 	}
 
