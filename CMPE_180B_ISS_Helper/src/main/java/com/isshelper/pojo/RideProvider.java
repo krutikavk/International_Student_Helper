@@ -1,10 +1,13 @@
 package com.isshelper.pojo;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class RideProvider {
 
 	private int P_Id;
 	private String P_Name;
-	private int P_Phone;
+	private long P_Phone;
 	private String P_Email;
 	private String P_Drivers_License;
 	public int getP_Id() {
@@ -19,10 +22,10 @@ public class RideProvider {
 	public void setP_Name(String p_Name) {
 		P_Name = p_Name;
 	}
-	public int getP_Phone() {
+	public long getP_Phone() {
 		return P_Phone;
 	}
-	public void setP_Phone(int p_Phone) {
+	public void setP_Phone(long p_Phone) {
 		P_Phone = p_Phone;
 	}
 	public String getP_Email() {

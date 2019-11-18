@@ -3,6 +3,8 @@ package com.isshelper.exception;
 public class IssHelperException extends Exception {
 
 	private String message;
+	
+	private String info;
 
 	public IssHelperException(String message) {
 		super();
@@ -17,4 +19,19 @@ public class IssHelperException extends Exception {
 		this.message = message;
 	}
 
+	/**
+	 * @return the info
+	 */
+	public String getInfo() {
+		return info;
+	}
+
+	/**
+	 * @param info the info to set
+	 */
+	public void setInfo(String info) {
+		this.info = info;
+	}
+	
+	
 }

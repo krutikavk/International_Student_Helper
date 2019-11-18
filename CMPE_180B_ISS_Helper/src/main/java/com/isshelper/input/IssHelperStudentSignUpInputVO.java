@@ -2,6 +2,9 @@ package com.isshelper.input;
 
 import javax.validation.constraints.Pattern;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class IssHelperStudentSignUpInputVO {
 
 	private String student_ID;

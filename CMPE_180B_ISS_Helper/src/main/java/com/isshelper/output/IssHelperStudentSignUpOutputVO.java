@@ -1,5 +1,8 @@
 package com.isshelper.output;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class IssHelperStudentSignUpOutputVO {
 
 	private String message;

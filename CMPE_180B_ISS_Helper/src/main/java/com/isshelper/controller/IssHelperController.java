@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isshelper.exception.IssHelperException;
+import com.isshelper.input.IssHelperRiderSignUpInputVO;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
+import com.isshelper.output.IssHelperOutput;
 import com.isshelper.output.IssHelperStudentSignUpOutputVO;
 import com.isshelper.service.IssHelperService;
 import com.isshelper.utils.ApplicationsConstants;
@@ -22,23 +24,21 @@ public class IssHelperController {
 	@Autowired
 	IssHelperService issHelperService;
 	@Autowired
-	IssHelperStudentSignUpOutputVO issHelperStudentSignUpOutputVO;
+	IssHelperOutput issHelperOutput;
 
 	@RequestMapping(path = "/StudentSignUp")
 	@ResponseBody
 	@PostMapping
-	public ResponseEntity<IssHelperStudentSignUpOutputVO> studentSignUp(
+	public ResponseEntity<IssHelperOutput> studentSignUp(
 			@RequestBody IssHelperStudentSignUpInputVO issHelperStudentSignUpInputVO) {
-		ResponseEntity<IssHelperStudentSignUpOutputVO> responseEntity;
+		ResponseEntity<IssHelperOutput> responseEntity;
 		try {
-			issHelperStudentSignUpOutputVO = issHelperService.signUp(issHelperStudentSignUpInputVO);
-			responseEntity = new ResponseEntity<IssHelperStudentSignUpOutputVO>(issHelperStudentSignUpOutputVO,
-					HttpStatus.OK);
+			issHelperOutput = issHelperService.studentSignUp(issHelperStudentSignUpInputVO);
+			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.OK);
 		} catch (IssHelperException e) {
 			// System.out.println(e.getMessage());
-			issHelperStudentSignUpOutputVO.setMessage(ApplicationsConstants.FAILURE);
-			responseEntity = new ResponseEntity<IssHelperStudentSignUpOutputVO>(issHelperStudentSignUpOutputVO,
-					HttpStatus.FORBIDDEN);
+			issHelperOutput.setMessage(ApplicationsConstants.FAILURE);
+			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.FORBIDDEN);
 			return responseEntity;
 		}
 		return responseEntity;
@@ -46,9 +46,19 @@ public class IssHelperController {
 	}
 
 	@RequestMapping("/RideProviderSignup")
-	public String rideProviderSignUp() {
-
-		return "";
+	public ResponseEntity<IssHelperOutput> rideProviderSignUp(
+			@RequestBody IssHelperRiderSignUpInputVO issHelperRiderSignUpInputVO) {
+		ResponseEntity<IssHelperOutput> responseEntity;
+		try {
+			issHelperOutput = issHelperService.riderSignUp(issHelperRiderSignUpInputVO);
+			responseEntity = new ResponseEntity<IssHelperOutput>((IssHelperOutput) issHelperOutput, HttpStatus.OK);
+			return responseEntity;
+		} catch (IssHelperException e) {
+			// TODO: handle exception
+			issHelperOutput.setMessage(ApplicationsConstants.FAILURE);
+			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.FORBIDDEN);
+			return responseEntity;
+		}
 
 	}
 
