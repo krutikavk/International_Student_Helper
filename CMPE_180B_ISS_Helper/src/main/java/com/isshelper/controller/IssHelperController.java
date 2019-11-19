@@ -51,7 +51,7 @@ public class IssHelperController {
 
 	}
 
-	@RequestMapping("/RideProviderSignup")
+	@RequestMapping("/RideProviderSignUp")
 	public ResponseEntity<IssHelperOutput> rideProviderSignUp(
 			@RequestBody IssHelperRiderSignUpInputVO issHelperRiderSignUpInputVO) {
 		issHelperOutput = new IssHelperOutput();
