@@ -41,6 +41,7 @@ public class IssHelperDaoImplementation {
 
 	IssHelperLoginOutput issHelperLoginOutput;
 	IssHelperOutput issHelperOutput;
+
 	public IssHelperOutput studentSignUp(IssHelperStudentSignUpInputVO issHelperStudentSignUpInputVO)
 			throws IssHelperException {
 		issHelperOutput = new IssHelperOutput();
@@ -93,7 +94,7 @@ public class IssHelperDaoImplementation {
 		} catch (DataAccessException e) {
 			throw new IssHelperException(ApplicationsConstants.RIDER_SIGNUP_FAILURE);
 		}
-		
+
 		issHelperOutput.setMessage(ApplicationsConstants.SUCCESS);
 		return issHelperOutput;
 
@@ -122,7 +123,7 @@ public class IssHelperDaoImplementation {
 		} catch (Exception e) {
 			throw new IssHelperException(ApplicationsConstants.STUDENT_REQUEST_RIDE_FAILURE);
 		}
-		
+
 		return issHelperOutput;
 	}
 
@@ -150,12 +151,12 @@ public class IssHelperDaoImplementation {
 		} catch (Exception e) {
 			throw new IssHelperException(ApplicationsConstants.RIDE_PROVIDER_POST_FAILURE);
 		}
-		
+
 		return issHelperOutput;
 	}
 
 	public IssHelperLoginOutput login(IssHelperLoginInput issHelperLoginInput) throws IssHelperException {
-		issHelperLoginOutput= new IssHelperLoginOutput();
+		issHelperLoginOutput = new IssHelperLoginOutput();
 		try {
 			if (issHelperLoginInput != null && issHelperLoginInput.getFlag().equals("S")) {
 				String studentProviderPasswordFromEmailQuery = "select S_Password from StudentHelper.dbo.Student where S_Email= '"
@@ -171,21 +172,44 @@ public class IssHelperDaoImplementation {
 						+ idFromEmail + "'";
 				String nameFromID = jdbcTemplate.queryForObject(studentnameFromIDQuery, String.class);
 
-				String studentPasswordFromIDQuery = "select S_Password from StudentHelper.dbo.Student where S_Id= '"
-						+ idFromEmail + "'";
-				String encryptedPasswordFromID = jdbcTemplate.queryForObject(studentPasswordFromIDQuery,
-						String.class);
-
 				if (!encryptedPasswordFromEmail.isEmpty()) {
-					if (passwordEncoder.matches( issHelperLoginInput.getPassword(),passwordEncoder.encode(encryptedPasswordFromEmail))
-							&& encryptedPasswordFromEmail.equals(encryptedPasswordFromID)) {
+					if (!(passwordEncoder.matches(issHelperLoginInput.getPassword(), encryptedPasswordFromEmail))) {
 						throw new IssHelperException("Invalid Password");
 					}
 
 					else {
-						
+
 						issHelperLoginOutput.setEmail(issHelperLoginInput.getEmail());
 						issHelperLoginOutput.setId(idFromEmail);
+						issHelperLoginOutput.setName(nameFromID);
+					}
+
+				}
+			}
+
+			if (issHelperLoginInput != null && issHelperLoginInput.getFlag().equals("R")) {
+				String RideProviderPasswordFromEmailQuery = "select P_Password from StudentHelper.dbo.Ride_Provider where P_Email= '"
+						+ issHelperLoginInput.getEmail() + "'";
+				String encryptedPasswordFromEmail = jdbcTemplate.queryForObject(RideProviderPasswordFromEmailQuery,
+						String.class);
+
+				String driversLicenseQuery = "select P_Drivers_License from StudentHelper.dbo.Ride_Provider where P_Email= '"
+						+ issHelperLoginInput.getEmail() + "'";
+				String driversLicenseFromEmail = jdbcTemplate.queryForObject(driversLicenseQuery, String.class);
+
+				String RidernameFromIDQuery = "select P_Name from StudentHelper.dbo.Ride_Provider where P_Drivers_License= '"
+						+ driversLicenseFromEmail + "'";
+				String nameFromID = jdbcTemplate.queryForObject(RidernameFromIDQuery, String.class);
+
+				if (!encryptedPasswordFromEmail.isEmpty()) {
+					if (!(passwordEncoder.matches(issHelperLoginInput.getPassword(), encryptedPasswordFromEmail))) {
+						throw new IssHelperException("Invalid Password");
+					}
+
+					else {
+
+						issHelperLoginOutput.setEmail(issHelperLoginInput.getEmail());
+						issHelperLoginOutput.setId(driversLicenseFromEmail);
 						issHelperLoginOutput.setName(nameFromID);
 					}
 
