@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isshelper.exception.IssHelperException;
+import com.isshelper.input.IssHelperLoginInput;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
+import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
-import com.isshelper.output.IssHelperStudentSignUpOutputVO;
 import com.isshelper.service.IssHelperService;
 import com.isshelper.utils.ApplicationsConstants;
 
@@ -25,8 +26,10 @@ public class IssHelperController {
 
 	@Autowired
 	IssHelperService issHelperService;
-	@Autowired
+
 	IssHelperOutput issHelperOutput;
+
+	IssHelperLoginOutput issHelperLoginOutput;
 
 	@RequestMapping(path = "/StudentSignUp")
 	@ResponseBody
@@ -34,6 +37,7 @@ public class IssHelperController {
 	public ResponseEntity<IssHelperOutput> studentSignUp(
 			@RequestBody IssHelperStudentSignUpInputVO issHelperStudentSignUpInputVO) {
 		ResponseEntity<IssHelperOutput> responseEntity;
+		issHelperOutput = new IssHelperOutput();
 		try {
 			issHelperOutput = issHelperService.studentSignUp(issHelperStudentSignUpInputVO);
 			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.OK);
@@ -50,6 +54,7 @@ public class IssHelperController {
 	@RequestMapping("/RideProviderSignup")
 	public ResponseEntity<IssHelperOutput> rideProviderSignUp(
 			@RequestBody IssHelperRiderSignUpInputVO issHelperRiderSignUpInputVO) {
+		issHelperOutput = new IssHelperOutput();
 		ResponseEntity<IssHelperOutput> responseEntity;
 		try {
 			issHelperOutput = issHelperService.riderSignUp(issHelperRiderSignUpInputVO);
@@ -66,6 +71,7 @@ public class IssHelperController {
 	@RequestMapping("/StudentRideRequest")
 	public ResponseEntity<IssHelperOutput> studentRideRequest(
 			@RequestBody IssHelperStudentRideRequest issHelperStudentRideRequest) {
+		issHelperOutput = new IssHelperOutput();
 		ResponseEntity<IssHelperOutput> responseEntity;
 		try {
 			issHelperOutput = issHelperService.studentRideRequest(issHelperStudentRideRequest);
@@ -79,10 +85,11 @@ public class IssHelperController {
 		}
 
 	}
-	
+
 	@RequestMapping("/ProviderRidePost")
 	public ResponseEntity<IssHelperOutput> providerRidePost(
 			@RequestBody IssHelperRidesPostedByProvider issHelperRidesPostedByProvider) {
+		issHelperOutput = new IssHelperOutput();
 		ResponseEntity<IssHelperOutput> responseEntity;
 		try {
 			issHelperOutput = issHelperService.providerRidePost(issHelperRidesPostedByProvider);
@@ -95,5 +102,25 @@ public class IssHelperController {
 			return responseEntity;
 		}
 
+	}
+
+	@RequestMapping("/Login")
+	public ResponseEntity<IssHelperLoginOutput> login(@RequestBody IssHelperLoginInput issHelperLoginInput)
+			throws IssHelperException {
+		ResponseEntity<IssHelperLoginOutput> responseEntity;
+		issHelperLoginOutput = new IssHelperLoginOutput();
+		try {
+			issHelperLoginOutput = issHelperService.login(issHelperLoginInput);
+			if (issHelperLoginOutput.getEmail() != null)
+				issHelperLoginOutput.setMessage(ApplicationsConstants.SUCCESS);
+			else
+				issHelperLoginOutput.setMessage(ApplicationsConstants.FAILURE);
+			responseEntity = new ResponseEntity<IssHelperLoginOutput>(issHelperLoginOutput, HttpStatus.OK);
+			return responseEntity;
+		} catch (IssHelperException e) {
+			issHelperLoginOutput.setMessage(e.getMessage());
+			responseEntity = new ResponseEntity<IssHelperLoginOutput>(issHelperLoginOutput, HttpStatus.FORBIDDEN);
+			return responseEntity;
+		}
 	}
 }

@@ -55,6 +55,10 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-jdbc')
 	compile('com.microsoft.sqlserver:mssql-jdbc')
 	
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto
+compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.1.2.RELEASE'
+	
+	
 	
 	
 	

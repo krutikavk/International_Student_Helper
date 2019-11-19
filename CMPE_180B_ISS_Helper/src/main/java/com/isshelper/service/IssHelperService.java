@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.isshelper.dao.IssHelperDaoImplementation;
 import com.isshelper.exception.IssHelperException;
+import com.isshelper.input.IssHelperLoginInput;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
+import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
 import com.isshelper.output.IssHelperStudentSignUpOutputVO;
 import com.isshelper.pojo.Student;
@@ -42,12 +44,15 @@ public class IssHelperService {
 		return issHelperDaoImplementation.studentRideRequest(issHelperStudentRideRequest);
 
 	}
-	
+
 	public IssHelperOutput providerRidePost(IssHelperRidesPostedByProvider issHelperRidesPostedByProvider)
 			throws IssHelperException {
-		
+
 		return issHelperDaoImplementation.providerRidePost(issHelperRidesPostedByProvider);
 
 	}
 
+	public IssHelperLoginOutput login(IssHelperLoginInput issHelperLoginInput) throws IssHelperException {
+		return issHelperDaoImplementation.login(issHelperLoginInput);
+	}
 }
