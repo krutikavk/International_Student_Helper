@@ -1,5 +1,7 @@
 package com.isshelper.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +16,7 @@ import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
 import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
+import com.isshelper.output.IssHelperRidesBookedByStudent;
 import com.isshelper.pojo.Ride;
 import com.isshelper.pojo.RideProvider;
 import com.isshelper.pojo.Rides_Posted_By_Provider;
@@ -119,9 +122,10 @@ public class IssHelperDaoImplementation {
 					+ rides_Requested_By_Student.getRRBS_S_Id() + "','" + rides_Requested_By_Student.getRRBS_Date()
 					+ "','" + rides_Requested_By_Student.getRRBS_Time() + "','"
 					+ rides_Requested_By_Student.getRBBS_Air_Code() + "',"
-					+ rides_Requested_By_Student.getRRBS_T_Number() + "," + rides_Requested_By_Student.getRRBS_Seats()+
-					",'"+ rides_Requested_By_Student.getRRBS_Street()+"','" + rides_Requested_By_Student.getRRBS_City()+"','"
-					+ rides_Requested_By_Student.getRRBS_State()+"'," + rides_Requested_By_Student.getRRBS_Zip() + ")";
+					+ rides_Requested_By_Student.getRRBS_T_Number() + "," + rides_Requested_By_Student.getRRBS_Seats()
+					+ ",'" + rides_Requested_By_Student.getRRBS_Street() + "','"
+					+ rides_Requested_By_Student.getRRBS_City() + "','" + rides_Requested_By_Student.getRRBS_State()
+					+ "'," + rides_Requested_By_Student.getRRBS_Zip() + ")";
 
 			jdbcTemplate.execute(insertRideRequestByStudent);
 
@@ -228,4 +232,21 @@ public class IssHelperDaoImplementation {
 		}
 		return issHelperLoginOutput;
 	}
+
+	public List<IssHelperRidesBookedByStudent> ridesBookedByStudent(String student_ID) throws IssHelperException {
+
+		List<IssHelperRidesBookedByStudent> ridesBookedByStudent = null;
+		String ridesBookedByStudentquery = "select r.R_Id , a.Air_Name , r.R_Starting_Terminal , r.R_Date , r.R_Time , rp.P_Name , rp.P_Email  from StudentHelper.dbo.Ride r join StudentHelper.dbo.Student_Ride_Availed ra on ra.SRA_Ride_Id = r.R_Id join StudentHelper.dbo.Airport a on a.Air_Code = r.R_Starting_Air_Code join StudentHelper.dbo.Ride_Provider rp on rp.P_Drivers_License = r.R_Accepted_By where ra.SRA_S_Id = "
+				+ "'" + student_ID + "'";
+		try {
+			ridesBookedByStudent = jdbcTemplate.query(ridesBookedByStudentquery,
+					new com.isshelper.utils.IssHelperRidesBookedByStudentRowMapper());
+
+		} catch (Exception e) {
+			throw new IssHelperException(ApplicationsConstants.STUDENT_BOOKED_RIDES_FETCHED_FAILED);
+		}
+		return ridesBookedByStudent;
+
+	}
+
 }

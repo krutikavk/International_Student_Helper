@@ -10,4 +10,5 @@ public final class ApplicationsConstants {
 	public static final String ACTIVE_PROFILE = "SPRING_PROFILES_ACTIVE";
 	public static final String RIDE_PROVIDER_POST_FAILURE = "Ride Post failed";
 	public static final String LOGIN_FAILURE = "Login Failed";
+	public static final String STUDENT_BOOKED_RIDES_FETCHED_FAILED = "Unable to Fetch Student Booked Rides";
 }

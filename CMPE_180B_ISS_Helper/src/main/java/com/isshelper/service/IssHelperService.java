@@ -1,5 +1,8 @@
 package com.isshelper.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +16,7 @@ import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
 import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
+import com.isshelper.output.IssHelperRidesBookedByStudent;
 import com.isshelper.output.IssHelperStudentSignUpOutputVO;
 import com.isshelper.pojo.Student;
 
@@ -53,6 +57,13 @@ public class IssHelperService {
 	}
 
 	public IssHelperLoginOutput login(IssHelperLoginInput issHelperLoginInput) throws IssHelperException {
+
 		return issHelperDaoImplementation.login(issHelperLoginInput);
+	}
+
+	public List<IssHelperRidesBookedByStudent> ridesBookedByStudent(String student_ID) throws IssHelperException
+
+	{
+		return issHelperDaoImplementation.ridesBookedByStudent(student_ID);
 	}
 }

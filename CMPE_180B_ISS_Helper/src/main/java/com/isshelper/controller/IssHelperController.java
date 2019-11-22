@@ -1,8 +1,11 @@
 package com.isshelper.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,11 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isshelper.exception.IssHelperException;
 import com.isshelper.input.IssHelperLoginInput;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
+import com.isshelper.input.IssHelperRidesBookedByStudentInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
 import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
+import com.isshelper.output.IssHelperRidesBookedByStudent;
 import com.isshelper.service.IssHelperService;
 import com.isshelper.utils.ApplicationsConstants;
 
@@ -31,6 +36,10 @@ public class IssHelperController {
 
 	IssHelperLoginOutput issHelperLoginOutput;
 
+	/*
+	 * @Autowired IssHelperMailNotificationHelper IssHelperMailNotificationHelper;
+	 */
+	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(path = "/StudentSignUp")
 	@ResponseBody
 	@PostMapping
@@ -51,6 +60,7 @@ public class IssHelperController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping("/RideProviderSignUp")
 	public ResponseEntity<IssHelperOutput> rideProviderSignUp(
 			@RequestBody IssHelperRiderSignUpInputVO issHelperRiderSignUpInputVO) {
@@ -68,6 +78,7 @@ public class IssHelperController {
 		}
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping("/StudentRideRequest")
 	public ResponseEntity<IssHelperOutput> studentRideRequest(
 			@RequestBody IssHelperStudentRideRequest issHelperStudentRideRequest) {
@@ -86,6 +97,7 @@ public class IssHelperController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping("/ProviderRidePost")
 	public ResponseEntity<IssHelperOutput> providerRidePost(
 			@RequestBody IssHelperRidesPostedByProvider issHelperRidesPostedByProvider) {
@@ -104,6 +116,7 @@ public class IssHelperController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping("/Login")
 	public ResponseEntity<IssHelperLoginOutput> login(@RequestBody IssHelperLoginInput issHelperLoginInput)
 			throws IssHelperException {
@@ -123,4 +136,25 @@ public class IssHelperController {
 			return responseEntity;
 		}
 	}
+
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping("/RidesBookedByStudent")
+	public ResponseEntity<List<IssHelperRidesBookedByStudent>> ridesBookedByStudent(
+			@RequestBody IssHelperRidesBookedByStudentInputVO issHelperRidesBookedByStudentInputVO) {
+
+		ResponseEntity<List<IssHelperRidesBookedByStudent>> responseEntity;
+		try {
+			List<IssHelperRidesBookedByStudent> IssHelperRidesBookedByStudentlist = issHelperService
+					.ridesBookedByStudent(issHelperRidesBookedByStudentInputVO.getStudent_ID());
+			responseEntity = new ResponseEntity<List<IssHelperRidesBookedByStudent>>(IssHelperRidesBookedByStudentlist,
+					HttpStatus.OK);
+			return responseEntity;
+		} catch (Exception e) {
+			return responseEntity = null;
+		}
+
+	}
+	
+
+
 }
