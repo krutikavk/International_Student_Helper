@@ -9,11 +9,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.isshelper.exception.IssHelperException;
+import com.isshelper.input.IssHelperBookAlreadyBookedRidesForStudent;
+import com.isshelper.input.IssHelperBookRideForStudentInputVO;
+import com.isshelper.input.IssHelperGetAlreadyBookedRidesForStudentInputVO;
+import com.isshelper.input.IssHelperGetBrandNewRidesPostedByProviderInputVO;
 import com.isshelper.input.IssHelperLoginInput;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
+import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
+import com.isshelper.output.IssHelperGetBrandNewRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
 import com.isshelper.output.IssHelperRidesBookedByStudent;
@@ -247,6 +253,160 @@ public class IssHelperDaoImplementation {
 		}
 		return ridesBookedByStudent;
 
+	}
+
+	// Method for Student to see RidesPosted By Provider Matching his time
+
+	public List<IssHelperGetBrandNewRidesPostedByProviderOutputVO> getBrandNewRidesPostedByProvider(
+			IssHelperGetBrandNewRidesPostedByProviderInputVO issHelperGetBrandNewRidesPostedByProviderInputVO)
+			throws IssHelperException {
+
+		List<IssHelperGetBrandNewRidesPostedByProviderOutputVO> IssHelperGetBrandNewRidesPostedByProviderOutputVOList = null;
+		try {
+
+			String getBrandNewRidesPostedByProviderquery = "select RPBP_Id, RPBP_Date, RPBP_Time, RPBP_From, RPBP_Total from StudentHelper.dbo.Rides_Posted_By_Provider where RPBP_Date ="
+					+ "'" + issHelperGetBrandNewRidesPostedByProviderInputVO.getDate() + "'and RPBP_Time >='"
+					+ issHelperGetBrandNewRidesPostedByProviderInputVO.getLanding_time() + "'and RPBP_From='"
+					+ issHelperGetBrandNewRidesPostedByProviderInputVO.getLanding_airport() + "'and RPBP_Total>="
+					+ issHelperGetBrandNewRidesPostedByProviderInputVO.getSeats();
+
+			IssHelperGetBrandNewRidesPostedByProviderOutputVOList = jdbcTemplate.query(
+					getBrandNewRidesPostedByProviderquery,
+					new com.isshelper.utils.IssHelperGetBrandNewRidesPostedByProviderrRowMapper());
+		} catch (Exception e) {
+			throw new IssHelperException(ApplicationsConstants.GET_BRAND_NEW_RIDES_POSTED_BY_PROVIDER);
+		}
+		return IssHelperGetBrandNewRidesPostedByProviderOutputVOList;
+
+	}
+
+	public IssHelperOutput bookRideForStudent(IssHelperBookRideForStudentInputVO issHelperBookRideForStudentInputVO)
+			throws IssHelperException {
+
+		IssHelperOutput issHelperOutput = new IssHelperOutput();
+
+		try {
+			String insertIntoRideQuery = "insert into StudentHelper.dbo.Ride values ('"
+					+ issHelperBookRideForStudentInputVO.getRpbp_Date() + "','"
+					+ issHelperBookRideForStudentInputVO.getRpbp_Time() + "',0,'"
+					+ issHelperBookRideForStudentInputVO.getRpbp_From() + "',"
+					+ issHelperBookRideForStudentInputVO.getTerminal() + ",'"
+					+ issHelperBookRideForStudentInputVO.getDrivers_Lisence() + "',"
+					+ issHelperBookRideForStudentInputVO.getSeats() + ","
+					+ issHelperBookRideForStudentInputVO.getRpbp_Total() + ")";
+
+			jdbcTemplate.execute(insertIntoRideQuery);
+
+			String getRideIDQuery = "Select R_ID from StudentHelper.dbo.Ride where R_Accepted_By= '"
+					+ issHelperBookRideForStudentInputVO.getDrivers_Lisence() + "' and R_Date='"
+					+ issHelperBookRideForStudentInputVO.getRpbp_Date() + "' and R_Time='"
+					+ issHelperBookRideForStudentInputVO.getRpbp_Time() + "'";
+
+			int RideID = jdbcTemplate.queryForObject(getRideIDQuery, Integer.class);
+
+			String insertIntoStudentRideAvailed = "insert into StudentHelper.dbo.Student_Ride_Availed values('"
+					+ issHelperBookRideForStudentInputVO.getStudent_Id() + "'," + RideID + ",0)";
+
+			jdbcTemplate.execute(insertIntoStudentRideAvailed);
+
+			String insertrideAddressQuery = "insert into StudentHelper.dbo.Ride_Address values('"
+					+ issHelperBookRideForStudentInputVO.getStudent_Id() + "'," + RideID + ",'"
+					+ issHelperBookRideForStudentInputVO.getStreet() + "','"
+					+ issHelperBookRideForStudentInputVO.getCity() + "','"
+					+ issHelperBookRideForStudentInputVO.getState() + "'," + issHelperBookRideForStudentInputVO.getZip()
+					+ ")";
+
+			jdbcTemplate.execute(insertrideAddressQuery);
+
+			String insertIntoStudentArrivingAtTerminalQuery = "insert into StudentHelper.dbo.Student_Arriving_Terminal values ('"
+					+ issHelperBookRideForStudentInputVO.getStudent_Id() + "','"
+					+ issHelperBookRideForStudentInputVO.getRpbp_From() + "',"
+					+ issHelperBookRideForStudentInputVO.getTerminal() + ",'"
+					+ issHelperBookRideForStudentInputVO.getRpbp_Date() + "','"
+					+ issHelperBookRideForStudentInputVO.getRpbp_Time() + "')";
+
+			jdbcTemplate.execute(insertIntoStudentArrivingAtTerminalQuery);
+
+			String deleteRidesPostedByProviderQuery = "delete from StudentHelper.dbo.Rides_Posted_By_Provider where RPBP_Id="
+					+ issHelperBookRideForStudentInputVO.getRpbp_Id();
+
+			jdbcTemplate.execute(deleteRidesPostedByProviderQuery);
+		} catch (Exception e) {
+			throw new IssHelperException(ApplicationsConstants.RIDE_BOOKING_FOR_STUDENT_FAILED);
+		}
+
+		issHelperOutput.setMessage(ApplicationsConstants.SUCCESS);
+		return issHelperOutput;
+	}
+
+	public List<IssHelperGetAlreadyBookedRidesForStudentOutputVO> getAlreadyBookedRidesForStudent(
+			IssHelperGetAlreadyBookedRidesForStudentInputVO issHelperGetAlreadyBookedRidesForStudentInputVO)
+			throws IssHelperException {
+		List<IssHelperGetAlreadyBookedRidesForStudentOutputVO> issHelperGetAlreadyBookedRidesForStudentOutputVOList = null;
+		try {
+
+			String getAlreadyBookedRidesForStudent = "select R_Id,R_date,R_Time,R_Rating,R_Starting_Air_Code,R_Starting_Terminal,R_Accepted_By,R_Current,R_Total from StudentHelper.dbo.Ride where R_Date='"
+					+ issHelperGetAlreadyBookedRidesForStudentInputVO.getDate() + "'" + " and R_Time  >= '"
+					+ issHelperGetAlreadyBookedRidesForStudentInputVO.getLanding_time() + "'and R_Starting_Air_Code= '"
+					+ issHelperGetAlreadyBookedRidesForStudentInputVO.getLanding_airport()
+					+ "' and R_Total-R_Current>= " + issHelperGetAlreadyBookedRidesForStudentInputVO.getSeats();
+
+			issHelperGetAlreadyBookedRidesForStudentOutputVOList = jdbcTemplate.query(getAlreadyBookedRidesForStudent,
+					new com.isshelper.utils.IssHelperGetAlreadyBookedRidesForStduentRowMapper());
+
+		} catch (Exception e) {
+			throw new IssHelperException(ApplicationsConstants.ALREADY_BOOKED_RIDES_FOR_STUDENT_FAILED);
+
+		}
+		return issHelperGetAlreadyBookedRidesForStudentOutputVOList;
+	}
+
+	public IssHelperOutput bookAlreadyBookedRidesForStudent(
+			IssHelperBookAlreadyBookedRidesForStudent issHelperBookAlreadyBookedRidesForStudent)
+			throws IssHelperException {
+
+		IssHelperOutput issHelperOutput = new IssHelperOutput();
+		try {
+
+			String bookAlreadyBookedRidesForStudentQuery = "update StudentHelper.dbo.Ride set R_Current ="+
+					(+ issHelperBookAlreadyBookedRidesForStudent.getR_Current()
+					+ issHelperBookAlreadyBookedRidesForStudent.getSeats() )+ " where R_Id = "
+					+ issHelperBookAlreadyBookedRidesForStudent.getR_Id();
+
+		jdbcTemplate.execute(bookAlreadyBookedRidesForStudentQuery);
+
+			String insertIntoStudentRideAvailedQuery = "Insert into StudentHelper.dbo.Student_Ride_Availed values( '"
+					+ issHelperBookAlreadyBookedRidesForStudent.getStudent_Id() + "',"
+					+ issHelperBookAlreadyBookedRidesForStudent.getR_Id() + "," + 0 + ")";
+
+			jdbcTemplate.execute(insertIntoStudentRideAvailedQuery);
+
+			String insertIntoStudentArrivingTerminalValuesQuery = "Insert into StudentHelper.dbo.Student_Arriving_Terminal values( '"
+					+ issHelperBookAlreadyBookedRidesForStudent.getStudent_Id() + "','"
+					+ issHelperBookAlreadyBookedRidesForStudent.getR_Starting_Air_Code() + "',"
+					+ issHelperBookAlreadyBookedRidesForStudent.getR_Starting_Terminal() + ",'"
+					+ issHelperBookAlreadyBookedRidesForStudent.getR_Date() + "','"
+					+ issHelperBookAlreadyBookedRidesForStudent.getR_Time() + "')";
+
+			jdbcTemplate.execute(insertIntoStudentArrivingTerminalValuesQuery);
+
+			String insertIntoRideAdressQuery = "Insert into StudentHelper.dbo.Ride_Address values( '"
+					+ issHelperBookAlreadyBookedRidesForStudent.getStudent_Id() + "',"
+					+ issHelperBookAlreadyBookedRidesForStudent.getR_Id() + ",'"
+					+ issHelperBookAlreadyBookedRidesForStudent.getStreet() + "','"
+					+ issHelperBookAlreadyBookedRidesForStudent.getCity() + "','"
+					+ issHelperBookAlreadyBookedRidesForStudent.getState() + "',"
+					+ issHelperBookAlreadyBookedRidesForStudent.getZip() + ")";
+
+			jdbcTemplate.execute(insertIntoRideAdressQuery);
+
+			
+		} catch (Exception e) {
+
+			throw new IssHelperException(ApplicationsConstants.FAILURE);
+		}
+		issHelperOutput.setMessage(ApplicationsConstants.SUCCESS);
+		return issHelperOutput;
 	}
 
 }

@@ -1,23 +1,26 @@
 package com.isshelper.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.isshelper.dao.IssHelperDaoImplementation;
 import com.isshelper.exception.IssHelperException;
+import com.isshelper.input.IssHelperBookAlreadyBookedRidesForStudent;
+import com.isshelper.input.IssHelperBookRideForStudentInputVO;
+import com.isshelper.input.IssHelperGetAlreadyBookedRidesForStudentInputVO;
+import com.isshelper.input.IssHelperGetBrandNewRidesPostedByProviderInputVO;
 import com.isshelper.input.IssHelperLoginInput;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
+import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
+import com.isshelper.output.IssHelperGetBrandNewRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
 import com.isshelper.output.IssHelperRidesBookedByStudent;
-import com.isshelper.output.IssHelperStudentSignUpOutputVO;
 import com.isshelper.pojo.Student;
 
 @Service
@@ -65,5 +68,34 @@ public class IssHelperService {
 
 	{
 		return issHelperDaoImplementation.ridesBookedByStudent(student_ID);
+	}
+
+	public List<IssHelperGetBrandNewRidesPostedByProviderOutputVO> getBrandNewRidesPostedByProvider(
+			IssHelperGetBrandNewRidesPostedByProviderInputVO issHelperGetBrandNewRidesPostedByProviderInputVO)
+			throws IssHelperException {
+
+		return issHelperDaoImplementation
+				.getBrandNewRidesPostedByProvider(issHelperGetBrandNewRidesPostedByProviderInputVO);
+	}
+
+	public IssHelperOutput bookRideForStudent(IssHelperBookRideForStudentInputVO issHelperBookRideForStudentInputVO)
+			throws IssHelperException {
+
+		return issHelperDaoImplementation.bookRideForStudent(issHelperBookRideForStudentInputVO);
+	}
+
+	public List<IssHelperGetAlreadyBookedRidesForStudentOutputVO> getAlreadyBookedRidesForStudent(
+			IssHelperGetAlreadyBookedRidesForStudentInputVO issHelperGetAlreadyBookedRidesForStudentInputVO)
+			throws IssHelperException {
+
+		return issHelperDaoImplementation
+				.getAlreadyBookedRidesForStudent(issHelperGetAlreadyBookedRidesForStudentInputVO);
+	}
+
+	public IssHelperOutput bookAlreadyBookedRidesForStudent(
+			IssHelperBookAlreadyBookedRidesForStudent issHelperBookAlreadyBookedRidesForStudent)
+			throws IssHelperException {
+
+		return issHelperDaoImplementation.bookAlreadyBookedRidesForStudent(issHelperBookAlreadyBookedRidesForStudent);
 	}
 }

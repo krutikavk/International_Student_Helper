@@ -13,12 +13,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isshelper.exception.IssHelperException;
+import com.isshelper.input.IssHelperBookAlreadyBookedRidesForStudent;
+import com.isshelper.input.IssHelperBookRideForStudentInputVO;
+import com.isshelper.input.IssHelperGetAlreadyBookedRidesForStudentInputVO;
+import com.isshelper.input.IssHelperGetBrandNewRidesPostedByProviderInputVO;
 import com.isshelper.input.IssHelperLoginInput;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
 import com.isshelper.input.IssHelperRidesBookedByStudentInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
+import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
+import com.isshelper.output.IssHelperGetBrandNewRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
 import com.isshelper.output.IssHelperRidesBookedByStudent;
@@ -138,7 +144,7 @@ public class IssHelperController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@RequestMapping("/RidesBookedByStudent")
+	@RequestMapping("/Dashboard/RidesBookedByStudent")
 	public ResponseEntity<List<IssHelperRidesBookedByStudent>> ridesBookedByStudent(
 			@RequestBody IssHelperRidesBookedByStudentInputVO issHelperRidesBookedByStudentInputVO) {
 
@@ -154,7 +160,92 @@ public class IssHelperController {
 		}
 
 	}
-	
 
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping("/GetBrandNewRidesPostedByProvider")
+	public ResponseEntity<List<IssHelperGetBrandNewRidesPostedByProviderOutputVO>> getBrandNewRidesPostedByProvider(
+			@RequestBody IssHelperGetBrandNewRidesPostedByProviderInputVO issHelperGetBrandNewRidesPostedByProviderInputVO) {
+		ResponseEntity<List<IssHelperGetBrandNewRidesPostedByProviderOutputVO>> responseEntity;
 
+		try {
+			List<IssHelperGetBrandNewRidesPostedByProviderOutputVO> issHelperGetBrandNewRidesPostedByProviderOutputVOList = issHelperService
+					.getBrandNewRidesPostedByProvider(issHelperGetBrandNewRidesPostedByProviderInputVO);
+
+			responseEntity = new ResponseEntity<List<IssHelperGetBrandNewRidesPostedByProviderOutputVO>>(
+					issHelperGetBrandNewRidesPostedByProviderOutputVOList, HttpStatus.OK);
+			return responseEntity;
+		}
+
+		catch (Exception e) {
+			return responseEntity = null;
+		}
+
+	}
+
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping("/BookRideForStudent")
+	public ResponseEntity<IssHelperOutput> bookRideForStudent(
+			@RequestBody IssHelperBookRideForStudentInputVO issHelperBookRideForStudentInputVO) {
+		ResponseEntity<IssHelperOutput> responseEntity;
+		issHelperOutput = new IssHelperOutput();
+
+		try {
+			issHelperOutput = issHelperService.bookRideForStudent(issHelperBookRideForStudentInputVO);
+
+			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.OK);
+			return responseEntity;
+		} catch (IssHelperException e) {
+
+			issHelperOutput.setMessage(e.getMessage());
+			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.FORBIDDEN);
+			return responseEntity;
+
+		}
+
+	}
+
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping("/GetAlreadyBookedRidesForStudent")
+	public ResponseEntity<List<IssHelperGetAlreadyBookedRidesForStudentOutputVO>> getAlreadyBookedRidesForStudent(
+			@RequestBody IssHelperGetAlreadyBookedRidesForStudentInputVO issHelperGetAlreadyBookedRidesForStudentInputVO) {
+		ResponseEntity<List<IssHelperGetAlreadyBookedRidesForStudentOutputVO>> responseEntity;
+
+		try {
+			List<IssHelperGetAlreadyBookedRidesForStudentOutputVO> issHelperGetBrandNewRidesPostedByProviderOutputVOList = issHelperService
+					.getAlreadyBookedRidesForStudent(issHelperGetAlreadyBookedRidesForStudentInputVO);
+
+			responseEntity = new ResponseEntity<List<IssHelperGetAlreadyBookedRidesForStudentOutputVO>>(
+					issHelperGetBrandNewRidesPostedByProviderOutputVOList, HttpStatus.OK);
+			return responseEntity;
+		}
+
+		catch (Exception e) {
+			return responseEntity = null;
+		}
+
+	}
+
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping("/BookAlreadyBookedRidesForStudent")
+	public ResponseEntity<IssHelperOutput> bookAlreadyBookedRidesForStudent(
+			@RequestBody IssHelperBookAlreadyBookedRidesForStudent issHelperBookAlreadyBookedRidesForStudent)
+			throws IssHelperException {
+		ResponseEntity<IssHelperOutput> responseEntity;
+		issHelperOutput = new IssHelperOutput();
+
+		try {
+			issHelperOutput = issHelperService
+					.bookAlreadyBookedRidesForStudent(issHelperBookAlreadyBookedRidesForStudent);
+
+			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.OK);
+			return responseEntity;
+		} catch (IssHelperException e) {
+
+			issHelperOutput.setMessage(ApplicationsConstants.FAILURE);
+			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.FORBIDDEN);
+			return responseEntity;
+
+		}
+
+	}
 }
