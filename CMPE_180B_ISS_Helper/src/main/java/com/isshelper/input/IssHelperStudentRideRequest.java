@@ -3,16 +3,89 @@ package com.isshelper.input;
 public class IssHelperStudentRideRequest {
 	
 	private int id;
+	private String student_ID;
 	private String date;
 	private String time;
 	private String aircode;
 	private int terminalNo;
 	private int seats;
+	private String Street;
+	private String City;
+	private String State;
+	private int Zip;
+	
+	
+	/**
+	 * @return the street
+	 */
+	public String getStreet() {
+		return Street;
+	}
+	/**
+	 * @param street the street to set
+	 */
+	public void setStreet(String street) {
+		Street = street;
+	}
+	/**
+	 * @return the city
+	 */
+	public String getCity() {
+		return City;
+	}
+	/**
+	 * @param city the city to set
+	 */
+	public void setCity(String city) {
+		City = city;
+	}
+	/**
+	 * @return the state
+	 */
+	public String getState() {
+		return State;
+	}
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(String state) {
+		State = state;
+	}
+	/**
+	 * @return the zip
+	 */
+	public int getZip() {
+		return Zip;
+	}
+	/**
+	 * @param zip the zip to set
+	 */
+	public void setZip(int zip) {
+		Zip = zip;
+	}
 	/**
 	 * @return the date
+	 * 
+	 * 
+	 * 
 	 */
+	
+	
+	
 	public int getId() {
 		return id;
+	}
+	/**
+	 * @return the student_ID
+	 */
+	public String getStudent_ID() {
+		return student_ID;
+	}
+	/**
+	 * @param student_ID the student_ID to set
+	 */
+	public void setStudent_ID(String student_ID) {
+		this.student_ID = student_ID;
 	}
 	/**
 	 * @param id the id to set

@@ -105,16 +105,23 @@ public class IssHelperDaoImplementation {
 		issHelperOutput = new IssHelperOutput();
 		try {
 			rides_Requested_By_Student.setRRBS_Id(issHelperStudentRideRequest.getId());
+			rides_Requested_By_Student.setRRBS_S_Id(issHelperStudentRideRequest.getStudent_ID());
 			rides_Requested_By_Student.setRBBS_Air_Code(issHelperStudentRideRequest.getAircode());
 			rides_Requested_By_Student.setRRBS_Date(issHelperStudentRideRequest.getDate());
 			rides_Requested_By_Student.setRRBS_Seats(issHelperStudentRideRequest.getSeats());
 			rides_Requested_By_Student.setRRBS_T_Number(issHelperStudentRideRequest.getTerminalNo());
 			rides_Requested_By_Student.setRRBS_Time(issHelperStudentRideRequest.getTime());
-			String insertRideRequestByStudent = "insert into StudentHelper.dbo.Rides_Requested_By_Student values ("
-					+ rides_Requested_By_Student.getRRBS_Id() + ",'" + rides_Requested_By_Student.getRRBS_Date() + "','"
-					+ rides_Requested_By_Student.getRRBS_Time() + "','" + rides_Requested_By_Student.getRBBS_Air_Code()
-					+ "'," + rides_Requested_By_Student.getRRBS_T_Number() + ","
-					+ rides_Requested_By_Student.getRRBS_Seats() + ")";
+			rides_Requested_By_Student.setRRBS_Street(issHelperStudentRideRequest.getStreet());
+			rides_Requested_By_Student.setRRBS_City(issHelperStudentRideRequest.getCity());
+			rides_Requested_By_Student.setRRBS_State(issHelperStudentRideRequest.getState());
+			rides_Requested_By_Student.setRRBS_Zip(issHelperStudentRideRequest.getZip());
+			String insertRideRequestByStudent = "insert into StudentHelper.dbo.Rides_Requested_By_Student values ('"
+					+ rides_Requested_By_Student.getRRBS_S_Id() + "','" + rides_Requested_By_Student.getRRBS_Date()
+					+ "','" + rides_Requested_By_Student.getRRBS_Time() + "','"
+					+ rides_Requested_By_Student.getRBBS_Air_Code() + "',"
+					+ rides_Requested_By_Student.getRRBS_T_Number() + "," + rides_Requested_By_Student.getRRBS_Seats()+
+					",'"+ rides_Requested_By_Student.getRRBS_Street()+"','" + rides_Requested_By_Student.getRRBS_City()+"','"
+					+ rides_Requested_By_Student.getRRBS_State()+"'," + rides_Requested_By_Student.getRRBS_Zip() + ")";
 
 			jdbcTemplate.execute(insertRideRequestByStudent);
 
