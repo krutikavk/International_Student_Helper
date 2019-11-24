@@ -2,6 +2,8 @@ package com.isshelper.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +37,8 @@ import com.isshelper.utils.ApplicationsConstants;
 @RequestMapping(path = "/IssHelper")
 public class IssHelperController {
 
+	private static final Logger log = LoggerFactory.getLogger(IssHelperController.class);
+
 	@Autowired
 	IssHelperService issHelperService;
 
@@ -55,10 +59,13 @@ public class IssHelperController {
 		issHelperOutput = new IssHelperOutput();
 		try {
 			issHelperOutput = issHelperService.studentSignUp(issHelperStudentSignUpInputVO);
+			log.info("Student SignUp InputVO" + issHelperStudentSignUpInputVO);
+			
 			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.OK);
 		} catch (IssHelperException e) {
 			// System.out.println(e.getMessage());
 			issHelperOutput.setMessage(e.getMessage());
+			log.error("Student SignUp InputVO" + issHelperStudentSignUpInputVO.toString());
 			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.FORBIDDEN);
 			return responseEntity;
 		}

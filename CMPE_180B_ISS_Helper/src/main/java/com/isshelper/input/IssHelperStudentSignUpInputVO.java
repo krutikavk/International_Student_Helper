@@ -72,4 +72,12 @@ public class IssHelperStudentSignUpInputVO {
 		this.university = university;
 	}
 
+	@Override
+	public String toString() {
+		return "IssHelperStudentSignUpInputVO [student_ID=" + student_ID + ", name=" + name + ", email=" + email
+				+ ", phone=" + phone + ", university=" + university + "]";
+	}
+
+	
+
 }

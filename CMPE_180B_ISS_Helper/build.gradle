@@ -40,12 +40,13 @@ repositories {
 sourceCompatibility =1.8
 targetCompatibility =1.8
 
+
+
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	
-	// APACHE LOGGER JAR
-	compile('log4j:log4j:1.2.17')
+	
 	// SWAGGER JAR
 	compile('io.springfox:springfox-swagger2:2.9.2')
 	compile('io.springfox:springfox-swagger-ui:2.9.2')
@@ -55,16 +56,13 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-jdbc')
 	compile('com.microsoft.sqlserver:mssql-jdbc')
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
-compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.1.3.RELEASE'
+	compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.1.3.RELEASE'
 	compile('org.springframework.boot:spring-boot-starter-mail')
 	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto
-compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.1.2.RELEASE'
+	compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.1.2.RELEASE'
 	
 	
-	
-	
-	
-
+  compile :'spring-boot-slf4j:Spring Boot SLF4j:1.0'
 	
 }
 
