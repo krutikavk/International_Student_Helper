@@ -210,11 +210,12 @@ public class IssHelperDaoImplementation {
 
 				if (!encryptedPasswordFromEmail.isEmpty()) {
 					if (!(passwordEncoder.matches(issHelperLoginInput.getPassword(), encryptedPasswordFromEmail))) {
+						log.error("Login Failed for user " + nameFromID);
 						throw new IssHelperException("Invalid Password");
 					}
 
 					else {
-
+						log.info("Student Login Successful for " + nameFromID);
 						issHelperLoginOutput.setEmail(issHelperLoginInput.getEmail());
 						issHelperLoginOutput.setId(idFromEmail);
 						issHelperLoginOutput.setName(nameFromID);
@@ -239,11 +240,12 @@ public class IssHelperDaoImplementation {
 
 				if (!encryptedPasswordFromEmail.isEmpty()) {
 					if (!(passwordEncoder.matches(issHelperLoginInput.getPassword(), encryptedPasswordFromEmail))) {
+						log.error("Login Failed for Ride Provider " + nameFromID);
 						throw new IssHelperException("Invalid Password");
 					}
 
 					else {
-
+						log.info("Login Successful for Ride Provider " + nameFromID);
 						issHelperLoginOutput.setEmail(issHelperLoginInput.getEmail());
 						issHelperLoginOutput.setId(driversLicenseFromEmail);
 						issHelperLoginOutput.setName(nameFromID);
@@ -253,6 +255,7 @@ public class IssHelperDaoImplementation {
 			}
 
 		} catch (Exception e) {
+			log.error("User Login Failed");
 			throw new IssHelperException(ApplicationsConstants.FAILURE);
 		}
 		return issHelperLoginOutput;
@@ -266,8 +269,10 @@ public class IssHelperDaoImplementation {
 		try {
 			ridesBookedByStudentList = jdbcTemplate.query(ridesBookedByStudentquery,
 					new com.isshelper.utils.IssHelperRidesBookedByStudentRowMapper());
+			log.info("Rides Booked by Student " + ridesBookedByStudentquery);
 
 		} catch (Exception e) {
+			log.error("Rides Booked by Student " + ridesBookedByStudentquery);
 			throw new IssHelperException(ApplicationsConstants.STUDENT_BOOKED_RIDES_FETCHED_FAILED);
 		}
 		return ridesBookedByStudentList;
@@ -283,8 +288,10 @@ public class IssHelperDaoImplementation {
 		try {
 			ridesPostedByStudentList = jdbcTemplate.query(ridesPostedByStudentquery,
 					new com.isshelper.utils.IssHelperRidesPostedByStudentRowMapper());
+			log.info("Rides Posted by Student " + ridesPostedByStudentList);
 
 		} catch (Exception e) {
+			log.error("Rides Booked by Student " + ridesPostedByStudentList);
 			throw new IssHelperException(ApplicationsConstants.STUDENT_BOOKED_RIDES_FETCHED_FAILED);
 		}
 		return ridesPostedByStudentList;
@@ -298,9 +305,10 @@ public class IssHelperDaoImplementation {
 			throws IssHelperException {
 
 		List<IssHelperGetBrandNewRidesPostedByProviderOutputVO> IssHelperGetBrandNewRidesPostedByProviderOutputVOList = null;
+		String getBrandNewRidesPostedByProviderquery = "";
 		try {
 
-			String getBrandNewRidesPostedByProviderquery = "select RPBP_Id, RPBP_Date, RPBP_Time, RPBP_From, RPBP_Total from StudentHelper.dbo.Rides_Posted_By_Provider where RPBP_Date ="
+			getBrandNewRidesPostedByProviderquery = "select RPBP_Id, RPBP_Date, RPBP_Time, RPBP_From, RPBP_Total from StudentHelper.dbo.Rides_Posted_By_Provider where RPBP_Date ="
 					+ "'" + issHelperGetBrandNewRidesPostedByProviderInputVO.getDate() + "'and RPBP_Time >='"
 					+ issHelperGetBrandNewRidesPostedByProviderInputVO.getLanding_time() + "'and RPBP_From='"
 					+ issHelperGetBrandNewRidesPostedByProviderInputVO.getLanding_airport() + "'and RPBP_Total>="
@@ -309,7 +317,9 @@ public class IssHelperDaoImplementation {
 			IssHelperGetBrandNewRidesPostedByProviderOutputVOList = jdbcTemplate.query(
 					getBrandNewRidesPostedByProviderquery,
 					new com.isshelper.utils.IssHelperGetBrandNewRidesPostedByProviderrRowMapper());
+			log.info("Get Brand New Rides Posted by Ride Provider " + getBrandNewRidesPostedByProviderquery);
 		} catch (Exception e) {
+			log.error("Get Brand New Rides Posted by Ride Provider " + getBrandNewRidesPostedByProviderquery);
 			throw new IssHelperException(ApplicationsConstants.GET_BRAND_NEW_RIDES_POSTED_BY_PROVIDER);
 		}
 		return IssHelperGetBrandNewRidesPostedByProviderOutputVOList;
@@ -320,8 +330,9 @@ public class IssHelperDaoImplementation {
 			throws IssHelperException {
 
 		IssHelperOutput issHelperOutput = new IssHelperOutput();
-
+		
 		try {
+			log.info("Executing Queries for Book Ride For Student");
 			String insertIntoRideQuery = "insert into StudentHelper.dbo.Ride values ('"
 					+ issHelperBookRideForStudentInputVO.getRpbp_Date() + "','"
 					+ issHelperBookRideForStudentInputVO.getRpbp_Time() + "',0,'"
@@ -330,8 +341,9 @@ public class IssHelperDaoImplementation {
 					+ issHelperBookRideForStudentInputVO.getDrivers_Lisence() + "',"
 					+ issHelperBookRideForStudentInputVO.getSeats() + ","
 					+ issHelperBookRideForStudentInputVO.getRpbp_Total() + ")";
-
+			
 			jdbcTemplate.execute(insertIntoRideQuery);
+			log.info("Executing " + insertIntoRideQuery + " Successful");
 
 			String getRideIDQuery = "Select R_ID from StudentHelper.dbo.Ride where R_Accepted_By= '"
 					+ issHelperBookRideForStudentInputVO.getDrivers_Lisence() + "' and R_Date='"
@@ -339,10 +351,12 @@ public class IssHelperDaoImplementation {
 					+ issHelperBookRideForStudentInputVO.getRpbp_Time() + "'";
 
 			int RideID = jdbcTemplate.queryForObject(getRideIDQuery, Integer.class);
+			log.info("Executing " + getRideIDQuery + " Successful");
 
 			String insertIntoStudentRideAvailed = "insert into StudentHelper.dbo.Student_Ride_Availed values('"
 					+ issHelperBookRideForStudentInputVO.getStudent_Id() + "'," + RideID + ",0)";
-
+			
+			log.info("Executing " + insertIntoStudentRideAvailed + " Successful");
 			jdbcTemplate.execute(insertIntoStudentRideAvailed);
 
 			String insertrideAddressQuery = "insert into StudentHelper.dbo.Ride_Address values('"
@@ -352,6 +366,7 @@ public class IssHelperDaoImplementation {
 					+ issHelperBookRideForStudentInputVO.getState() + "'," + issHelperBookRideForStudentInputVO.getZip()
 					+ ")";
 
+			log.info("Executing " + insertrideAddressQuery + " Successful");
 			jdbcTemplate.execute(insertrideAddressQuery);
 
 			String insertIntoStudentArrivingAtTerminalQuery = "insert into StudentHelper.dbo.Student_Arriving_Terminal values ('"
@@ -361,13 +376,16 @@ public class IssHelperDaoImplementation {
 					+ issHelperBookRideForStudentInputVO.getRpbp_Date() + "','"
 					+ issHelperBookRideForStudentInputVO.getRpbp_Time() + "')";
 
+			log.info("Executing " + insertIntoStudentArrivingAtTerminalQuery + " Successful");
 			jdbcTemplate.execute(insertIntoStudentArrivingAtTerminalQuery);
 
 			String deleteRidesPostedByProviderQuery = "delete from StudentHelper.dbo.Rides_Posted_By_Provider where RPBP_Id="
 					+ issHelperBookRideForStudentInputVO.getRpbp_Id();
 
+			log.info("Executing " + deleteRidesPostedByProviderQuery + " Successful");
 			jdbcTemplate.execute(deleteRidesPostedByProviderQuery);
 		} catch (Exception e) {
+			log.error("Ride Booking for Student Failed");
 			throw new IssHelperException(ApplicationsConstants.RIDE_BOOKING_FOR_STUDENT_FAILED);
 		}
 
@@ -379,9 +397,10 @@ public class IssHelperDaoImplementation {
 			IssHelperGetAlreadyBookedRidesForStudentInputVO issHelperGetAlreadyBookedRidesForStudentInputVO)
 			throws IssHelperException {
 		List<IssHelperGetAlreadyBookedRidesForStudentOutputVO> issHelperGetAlreadyBookedRidesForStudentOutputVOList = null;
+		String getAlreadyBookedRidesForStudent = "";
 		try {
 
-			String getAlreadyBookedRidesForStudent = "select R_Id,R_date,R_Time,R_Rating,R_Starting_Air_Code,R_Starting_Terminal,R_Accepted_By,R_Current,R_Total from StudentHelper.dbo.Ride where R_Date='"
+			getAlreadyBookedRidesForStudent = "select R_Id,R_date,R_Time,R_Rating,R_Starting_Air_Code,R_Starting_Terminal,R_Accepted_By,R_Current,R_Total from StudentHelper.dbo.Ride where R_Date='"
 					+ issHelperGetAlreadyBookedRidesForStudentInputVO.getDate() + "'" + " and R_Time  >= '"
 					+ issHelperGetAlreadyBookedRidesForStudentInputVO.getLanding_time() + "'and R_Starting_Air_Code= '"
 					+ issHelperGetAlreadyBookedRidesForStudentInputVO.getLanding_airport()
@@ -389,8 +408,10 @@ public class IssHelperDaoImplementation {
 
 			issHelperGetAlreadyBookedRidesForStudentOutputVOList = jdbcTemplate.query(getAlreadyBookedRidesForStudent,
 					new com.isshelper.utils.IssHelperGetAlreadyBookedRidesForStduentRowMapper());
+			log.info("Getting all rides booked by Student " + getAlreadyBookedRidesForStudent);
 
 		} catch (Exception e) {
+			log.info("Getting all rides booked by Student " + getAlreadyBookedRidesForStudent);
 			throw new IssHelperException(ApplicationsConstants.ALREADY_BOOKED_RIDES_FOR_STUDENT_FAILED);
 
 		}
@@ -403,6 +424,7 @@ public class IssHelperDaoImplementation {
 
 		IssHelperOutput issHelperOutput = new IssHelperOutput();
 		try {
+			log.info("Booked Rides for Student Queries");
 
 			String bookAlreadyBookedRidesForStudentQuery = "update StudentHelper.dbo.Ride set R_Current ="
 					+ (+issHelperBookAlreadyBookedRidesForStudent.getR_Current()
@@ -410,12 +432,14 @@ public class IssHelperDaoImplementation {
 					+ " where R_Id = " + issHelperBookAlreadyBookedRidesForStudent.getR_Id();
 
 			jdbcTemplate.execute(bookAlreadyBookedRidesForStudentQuery);
+			log.info("Successfully executed " + bookAlreadyBookedRidesForStudentQuery);
 
 			String insertIntoStudentRideAvailedQuery = "Insert into StudentHelper.dbo.Student_Ride_Availed values( '"
 					+ issHelperBookAlreadyBookedRidesForStudent.getStudent_Id() + "',"
 					+ issHelperBookAlreadyBookedRidesForStudent.getR_Id() + "," + 0 + ")";
 
 			jdbcTemplate.execute(insertIntoStudentRideAvailedQuery);
+			log.info("Successfully executed " + insertIntoStudentRideAvailedQuery);
 
 			String insertIntoStudentArrivingTerminalValuesQuery = "Insert into StudentHelper.dbo.Student_Arriving_Terminal values( '"
 					+ issHelperBookAlreadyBookedRidesForStudent.getStudent_Id() + "','"
@@ -425,6 +449,7 @@ public class IssHelperDaoImplementation {
 					+ issHelperBookAlreadyBookedRidesForStudent.getR_Time() + "')";
 
 			jdbcTemplate.execute(insertIntoStudentArrivingTerminalValuesQuery);
+			log.info("Successfully executed " + insertIntoStudentArrivingTerminalValuesQuery);
 
 			String insertIntoRideAdressQuery = "Insert into StudentHelper.dbo.Ride_Address values( '"
 					+ issHelperBookAlreadyBookedRidesForStudent.getStudent_Id() + "',"
@@ -435,9 +460,10 @@ public class IssHelperDaoImplementation {
 					+ issHelperBookAlreadyBookedRidesForStudent.getZip() + ")";
 
 			jdbcTemplate.execute(insertIntoRideAdressQuery);
+			log.info("Successfully executed " + insertIntoRideAdressQuery);
 
 		} catch (Exception e) {
-
+			log.error("Booked Rides for Student Queries execution failed");
 			throw new IssHelperException(ApplicationsConstants.FAILURE);
 		}
 		issHelperOutput.setMessage(ApplicationsConstants.SUCCESS);
@@ -463,8 +489,9 @@ public class IssHelperDaoImplementation {
 
 			providerViewRidesPostedByStudentOutputVOList = jdbcTemplate.query(providerViewRidesPostedByStudentQuery,
 					new com.isshelper.utils.IssHelperProviderViewRidesPostedByStudentByRowMapper());
-
+			log.info("View rides posted by Student " + providerViewRidesPostedByStudentQuery);
 		} catch (Exception e) {
+			log.info("View rides posted by Student fetch failed");
 			throw new IssHelperException(ApplicationsConstants.STUDENT_BOOKED_RIDES_FETCHED_FAILED);
 		}
 		return providerViewRidesPostedByStudentOutputVOList;
