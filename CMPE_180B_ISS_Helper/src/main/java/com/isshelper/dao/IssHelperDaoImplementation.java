@@ -1,6 +1,7 @@
 package com.isshelper.dao;
 
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
-import com.isshelper.controller.IssHelperController;
 import com.isshelper.exception.IssHelperException;
 import com.isshelper.input.IssHelperBookAlreadyBookedRidesForStudent;
 import com.isshelper.input.IssHelperBookRideForStudentInputVO;
@@ -103,7 +103,7 @@ public class IssHelperDaoImplementation {
 			riderProvider.setP_Drivers_License(issHelperRiderSignUpInputVO.getDriversLicense());
 			riderProvider.setP_Password(passwordEncoder.encode(issHelperRiderSignUpInputVO.getPassword()));
 			riderProvider.setP_University(u_id);
-			String insertRideProvider = "insert into StudentHelper.dbo.Ride_Provider values ('"
+			 insertRideProvider = "insert into StudentHelper.dbo.Ride_Provider values ('"
 					+ riderProvider.getP_Drivers_License() + "','" + riderProvider.getP_Password() + "','"
 					+ riderProvider.getP_Name() + "'" + "," + riderProvider.getP_Phone() + ",'"
 					+ riderProvider.getP_Email() + "'," + riderProvider.getP_University() + ")";
