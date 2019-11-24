@@ -20,6 +20,7 @@ import com.isshelper.input.IssHelperBookRideForStudentInputVO;
 import com.isshelper.input.IssHelperGetAlreadyBookedRidesForStudentInputVO;
 import com.isshelper.input.IssHelperGetBrandNewRidesPostedByProviderInputVO;
 import com.isshelper.input.IssHelperLoginInput;
+import com.isshelper.input.IssHelperProviderViewRidesPostedByStudentInputVO;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
 import com.isshelper.input.IssHelperRidesBookedByStudentInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
@@ -29,7 +30,9 @@ import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
 import com.isshelper.output.IssHelperGetBrandNewRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
+import com.isshelper.output.IssHelperProviderViewRidesPostedByStudentOutputVO;
 import com.isshelper.output.IssHelperRidesBookedByStudent;
+import com.isshelper.output.IssHelperRidesPostedByStudentOutputVO;
 import com.isshelper.service.IssHelperService;
 import com.isshelper.utils.ApplicationsConstants;
 
@@ -60,7 +63,7 @@ public class IssHelperController {
 		try {
 			issHelperOutput = issHelperService.studentSignUp(issHelperStudentSignUpInputVO);
 			log.info("Student SignUp InputVO" + issHelperStudentSignUpInputVO);
-			
+
 			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.OK);
 		} catch (IssHelperException e) {
 			// System.out.println(e.getMessage());
@@ -169,6 +172,25 @@ public class IssHelperController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping("/Dashboard/RidesPostedByStudent")
+	public ResponseEntity<List<IssHelperRidesPostedByStudentOutputVO>> ridesPostedByStudent(
+			@RequestBody IssHelperRidesBookedByStudentInputVO issHelperRidesBookedByStudentInputVO)
+			throws IssHelperException {
+
+		ResponseEntity<List<IssHelperRidesPostedByStudentOutputVO>> responseEntity;
+		try {
+			List<IssHelperRidesPostedByStudentOutputVO> IssHelperRidesPostedByStudentOutputVOList = issHelperService
+					.ridesPostedByStudent(issHelperRidesBookedByStudentInputVO.getStudent_ID());
+			responseEntity = new ResponseEntity<List<IssHelperRidesPostedByStudentOutputVO>>(
+					IssHelperRidesPostedByStudentOutputVOList, HttpStatus.OK);
+			return responseEntity;
+		} catch (Exception e) {
+			return responseEntity = null;
+		}
+
+	}
+
+	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping("/GetBrandNewRidesPostedByProvider")
 	public ResponseEntity<List<IssHelperGetBrandNewRidesPostedByProviderOutputVO>> getBrandNewRidesPostedByProvider(
 			@RequestBody IssHelperGetBrandNewRidesPostedByProviderInputVO issHelperGetBrandNewRidesPostedByProviderInputVO) {
@@ -255,4 +277,26 @@ public class IssHelperController {
 		}
 
 	}
+
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping("/ProviderViewRidesPostedByStudent")
+	public ResponseEntity<List<IssHelperProviderViewRidesPostedByStudentOutputVO>> getProviderViewRidesPostedByStudent(
+			@RequestBody IssHelperProviderViewRidesPostedByStudentInputVO issHelperProviderViewRidesPostedByStudentInputVO) {
+		ResponseEntity<List<IssHelperProviderViewRidesPostedByStudentOutputVO>> responseEntity;
+
+		try {
+			List<IssHelperProviderViewRidesPostedByStudentOutputVO> IssHelperProviderViewRidesPostedByStudentOutputVOList = issHelperService
+					.providerViewRidesPostedByStudent(issHelperProviderViewRidesPostedByStudentInputVO);
+
+			responseEntity = new ResponseEntity<List<IssHelperProviderViewRidesPostedByStudentOutputVO>>(
+					IssHelperProviderViewRidesPostedByStudentOutputVOList, HttpStatus.OK);
+			return responseEntity;
+		}
+
+		catch (Exception e) {
+			return responseEntity = null;
+		}
+
+	}
+
 }

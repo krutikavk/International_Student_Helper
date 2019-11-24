@@ -14,6 +14,7 @@ import com.isshelper.input.IssHelperBookRideForStudentInputVO;
 import com.isshelper.input.IssHelperGetAlreadyBookedRidesForStudentInputVO;
 import com.isshelper.input.IssHelperGetBrandNewRidesPostedByProviderInputVO;
 import com.isshelper.input.IssHelperLoginInput;
+import com.isshelper.input.IssHelperProviderViewRidesPostedByStudentInputVO;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideRequest;
@@ -22,7 +23,9 @@ import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
 import com.isshelper.output.IssHelperGetBrandNewRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
+import com.isshelper.output.IssHelperProviderViewRidesPostedByStudentOutputVO;
 import com.isshelper.output.IssHelperRidesBookedByStudent;
+import com.isshelper.output.IssHelperRidesPostedByStudentOutputVO;
 import com.isshelper.pojo.Ride;
 import com.isshelper.pojo.RideProvider;
 import com.isshelper.pojo.Rides_Posted_By_Provider;
@@ -241,17 +244,34 @@ public class IssHelperDaoImplementation {
 
 	public List<IssHelperRidesBookedByStudent> ridesBookedByStudent(String student_ID) throws IssHelperException {
 
-		List<IssHelperRidesBookedByStudent> ridesBookedByStudent = null;
+		List<IssHelperRidesBookedByStudent> ridesBookedByStudentList = null;
 		String ridesBookedByStudentquery = "select r.R_Id , a.Air_Name , r.R_Starting_Terminal , r.R_Date , r.R_Time , rp.P_Name , rp.P_Email  from StudentHelper.dbo.Ride r join StudentHelper.dbo.Student_Ride_Availed ra on ra.SRA_Ride_Id = r.R_Id join StudentHelper.dbo.Airport a on a.Air_Code = r.R_Starting_Air_Code join StudentHelper.dbo.Ride_Provider rp on rp.P_Drivers_License = r.R_Accepted_By where ra.SRA_S_Id = "
 				+ "'" + student_ID + "'";
 		try {
-			ridesBookedByStudent = jdbcTemplate.query(ridesBookedByStudentquery,
+			ridesBookedByStudentList = jdbcTemplate.query(ridesBookedByStudentquery,
 					new com.isshelper.utils.IssHelperRidesBookedByStudentRowMapper());
 
 		} catch (Exception e) {
 			throw new IssHelperException(ApplicationsConstants.STUDENT_BOOKED_RIDES_FETCHED_FAILED);
 		}
-		return ridesBookedByStudent;
+		return ridesBookedByStudentList;
+
+	}
+
+	public List<IssHelperRidesPostedByStudentOutputVO> ridesPostedByStudent(String student_ID)
+			throws IssHelperException {
+
+		List<IssHelperRidesPostedByStudentOutputVO> ridesPostedByStudentList = null;
+		String ridesPostedByStudentquery = "	select RRBS_Id,	RRBS_Date, RRBS_Time, RRBS_Air_Code, RRBS_T_Number,	RRBS_Seats,	RRBS_Street, RRBS_City,	RRBS_State,	RRBS_Zip from StudentHelper.dbo.Rides_Requested_By_Student where RRBS_S_Id = "
+				+ "'" + student_ID + "'" + "and RRBS_Date >= GETDATE()";
+		try {
+			ridesPostedByStudentList = jdbcTemplate.query(ridesPostedByStudentquery,
+					new com.isshelper.utils.IssHelperRidesPostedByStudentRowMapper());
+
+		} catch (Exception e) {
+			throw new IssHelperException(ApplicationsConstants.STUDENT_BOOKED_RIDES_FETCHED_FAILED);
+		}
+		return ridesPostedByStudentList;
 
 	}
 
@@ -368,12 +388,12 @@ public class IssHelperDaoImplementation {
 		IssHelperOutput issHelperOutput = new IssHelperOutput();
 		try {
 
-			String bookAlreadyBookedRidesForStudentQuery = "update StudentHelper.dbo.Ride set R_Current ="+
-					(+ issHelperBookAlreadyBookedRidesForStudent.getR_Current()
-					+ issHelperBookAlreadyBookedRidesForStudent.getSeats() )+ " where R_Id = "
-					+ issHelperBookAlreadyBookedRidesForStudent.getR_Id();
+			String bookAlreadyBookedRidesForStudentQuery = "update StudentHelper.dbo.Ride set R_Current ="
+					+ (+issHelperBookAlreadyBookedRidesForStudent.getR_Current()
+							+ issHelperBookAlreadyBookedRidesForStudent.getSeats())
+					+ " where R_Id = " + issHelperBookAlreadyBookedRidesForStudent.getR_Id();
 
-		jdbcTemplate.execute(bookAlreadyBookedRidesForStudentQuery);
+			jdbcTemplate.execute(bookAlreadyBookedRidesForStudentQuery);
 
 			String insertIntoStudentRideAvailedQuery = "Insert into StudentHelper.dbo.Student_Ride_Availed values( '"
 					+ issHelperBookAlreadyBookedRidesForStudent.getStudent_Id() + "',"
@@ -400,13 +420,39 @@ public class IssHelperDaoImplementation {
 
 			jdbcTemplate.execute(insertIntoRideAdressQuery);
 
-			
 		} catch (Exception e) {
 
 			throw new IssHelperException(ApplicationsConstants.FAILURE);
 		}
 		issHelperOutput.setMessage(ApplicationsConstants.SUCCESS);
 		return issHelperOutput;
+	}
+
+	public List<IssHelperProviderViewRidesPostedByStudentOutputVO> providerViewRidesPostedByStudent(
+			IssHelperProviderViewRidesPostedByStudentInputVO issHelperProviderViewRidesPostedByStudentByIntputVO)
+			throws IssHelperException {
+		List<IssHelperProviderViewRidesPostedByStudentOutputVO> providerViewRidesPostedByStudentOutputVOList = null;
+
+		try {
+			String rideProviderUniversityIdQuery = "select P_University from StudentHelper.dbo.Ride_Provider where P_Drivers_License ='"
+					+ issHelperProviderViewRidesPostedByStudentByIntputVO.getDrivers_Lisence()+"'";
+
+			String rideProviderUniversityId = jdbcTemplate.queryForObject(rideProviderUniversityIdQuery, String.class);
+
+			String providerViewRidesPostedByStudentQuery = "select RRBS_Id,	RRBS_S_Id,	RRBS_Date,	RRBS_Time,	RRBS_Air_Code,	RRBS_T_Number,	RRBS_Seats from StudentHelper.dbo.Rides_Requested_By_Student rrbs where RRBS_Date= '"
+					+ issHelperProviderViewRidesPostedByStudentByIntputVO.getDate() + "' and rrbs.RRBS_Seats <= "
+					+ issHelperProviderViewRidesPostedByStudentByIntputVO.getSeats()
+					+ " and rrbs.RRBS_Air_Code in (select N_A_Code from StudentHelper.dbo.Nearby_Airports where N_U_Id = "
+					+ rideProviderUniversityId + ")";
+
+			providerViewRidesPostedByStudentOutputVOList = jdbcTemplate.query(providerViewRidesPostedByStudentQuery,
+					new com.isshelper.utils.IssHelperProviderViewRidesPostedByStudentByRowMapper());
+
+		} catch (Exception e) {
+			throw new IssHelperException(ApplicationsConstants.STUDENT_BOOKED_RIDES_FETCHED_FAILED);
+		}
+		return providerViewRidesPostedByStudentOutputVOList;
+
 	}
 
 }

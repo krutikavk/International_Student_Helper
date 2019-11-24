@@ -12,6 +12,7 @@ import com.isshelper.input.IssHelperBookRideForStudentInputVO;
 import com.isshelper.input.IssHelperGetAlreadyBookedRidesForStudentInputVO;
 import com.isshelper.input.IssHelperGetBrandNewRidesPostedByProviderInputVO;
 import com.isshelper.input.IssHelperLoginInput;
+import com.isshelper.input.IssHelperProviderViewRidesPostedByStudentInputVO;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideRequest;
@@ -20,7 +21,9 @@ import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
 import com.isshelper.output.IssHelperGetBrandNewRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
+import com.isshelper.output.IssHelperProviderViewRidesPostedByStudentOutputVO;
 import com.isshelper.output.IssHelperRidesBookedByStudent;
+import com.isshelper.output.IssHelperRidesPostedByStudentOutputVO;
 import com.isshelper.pojo.Student;
 
 @Service
@@ -57,6 +60,12 @@ public class IssHelperService {
 
 		return issHelperDaoImplementation.providerRidePost(issHelperRidesPostedByProvider);
 
+	}
+
+	public List<IssHelperRidesPostedByStudentOutputVO> ridesPostedByStudent(String student_ID)
+			throws IssHelperException {
+
+		return issHelperDaoImplementation.ridesPostedByStudent(student_ID);
 	}
 
 	public IssHelperLoginOutput login(IssHelperLoginInput issHelperLoginInput) throws IssHelperException {
@@ -98,4 +107,14 @@ public class IssHelperService {
 
 		return issHelperDaoImplementation.bookAlreadyBookedRidesForStudent(issHelperBookAlreadyBookedRidesForStudent);
 	}
+
+	public List<IssHelperProviderViewRidesPostedByStudentOutputVO> providerViewRidesPostedByStudent(
+			IssHelperProviderViewRidesPostedByStudentInputVO issHelperProviderViewRidesPostedByStudentByIntputVO)
+			throws IssHelperException {
+
+		return issHelperDaoImplementation
+				.providerViewRidesPostedByStudent(issHelperProviderViewRidesPostedByStudentByIntputVO);
+
+	}
+
 }
