@@ -84,11 +84,13 @@ public class IssHelperController {
 		ResponseEntity<IssHelperOutput> responseEntity;
 		try {
 			issHelperOutput = issHelperService.riderSignUp(issHelperRiderSignUpInputVO);
+			log.info("Ride Provider SignUp InputVO " + issHelperRiderSignUpInputVO.toString());
 			responseEntity = new ResponseEntity<IssHelperOutput>((IssHelperOutput) issHelperOutput, HttpStatus.OK);
 			return responseEntity;
 		} catch (IssHelperException e) {
 			// TODO: handle exception
 			issHelperOutput.setMessage(e.getMessage());
+			log.error("Ride Provider SignUp InputVO " + issHelperRiderSignUpInputVO.toString());
 			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.FORBIDDEN);
 			return responseEntity;
 		}
@@ -102,11 +104,13 @@ public class IssHelperController {
 		ResponseEntity<IssHelperOutput> responseEntity;
 		try {
 			issHelperOutput = issHelperService.studentRideRequest(issHelperStudentRideRequest);
+			log.info("Student Ride Request InputVO " + issHelperStudentRideRequest.toString());
 			responseEntity = new ResponseEntity<IssHelperOutput>((IssHelperOutput) issHelperOutput, HttpStatus.OK);
 			return responseEntity;
 		} catch (IssHelperException e) {
 			// TODO: handle exception
 			issHelperOutput.setMessage(e.getMessage());
+			log.error("Student Ride Request InputVO " + issHelperStudentRideRequest.toString());
 			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.FORBIDDEN);
 			return responseEntity;
 		}
@@ -121,11 +125,13 @@ public class IssHelperController {
 		ResponseEntity<IssHelperOutput> responseEntity;
 		try {
 			issHelperOutput = issHelperService.providerRidePost(issHelperRidesPostedByProvider);
+			log.info("Student SignUp InputVO " + issHelperRidesPostedByProvider.toString());
 			responseEntity = new ResponseEntity<IssHelperOutput>((IssHelperOutput) issHelperOutput, HttpStatus.OK);
 			return responseEntity;
 		} catch (IssHelperException e) {
 			// TODO: handle exception
 			issHelperOutput.setMessage(e.getMessage());
+			log.error("Student SignUp InputVO " + issHelperRidesPostedByProvider.toString());
 			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.FORBIDDEN);
 			return responseEntity;
 		}
@@ -140,6 +146,7 @@ public class IssHelperController {
 		issHelperLoginOutput = new IssHelperLoginOutput();
 		try {
 			issHelperLoginOutput = issHelperService.login(issHelperLoginInput);
+			log.info("Login InputVO " + issHelperLoginInput.toString());
 			if (issHelperLoginOutput.getEmail() != null)
 				issHelperLoginOutput.setMessage(ApplicationsConstants.SUCCESS);
 			else
@@ -148,6 +155,7 @@ public class IssHelperController {
 			return responseEntity;
 		} catch (IssHelperException e) {
 			issHelperLoginOutput.setMessage(e.getMessage());
+			log.error("Login InputVO " + issHelperLoginInput.toString());
 			responseEntity = new ResponseEntity<IssHelperLoginOutput>(issHelperLoginOutput, HttpStatus.FORBIDDEN);
 			return responseEntity;
 		}
@@ -160,6 +168,7 @@ public class IssHelperController {
 
 		ResponseEntity<List<IssHelperRidesBookedByStudent>> responseEntity;
 		try {
+			log.info("Rides Booked By Student InputVO" + issHelperRidesBookedByStudentInputVO.toString());
 			List<IssHelperRidesBookedByStudent> IssHelperRidesBookedByStudentlist = issHelperService
 					.ridesBookedByStudent(issHelperRidesBookedByStudentInputVO.getStudent_ID());
 			responseEntity = new ResponseEntity<List<IssHelperRidesBookedByStudent>>(IssHelperRidesBookedByStudentlist,
@@ -167,6 +176,8 @@ public class IssHelperController {
 			return responseEntity;
 		} catch (Exception e) {
 			return responseEntity = null;
+			log.error("Rides Booked By Student " + issHelperRidesBookedByStudentInputVO.toString());
+
 		}
 
 	}
@@ -197,6 +208,7 @@ public class IssHelperController {
 		ResponseEntity<List<IssHelperGetBrandNewRidesPostedByProviderOutputVO>> responseEntity;
 
 		try {
+			log.info("Get brand new Rides posted by provider InputVO " + issHelperGetBrandNewRidesPostedByProviderInputVO.toString());
 			List<IssHelperGetBrandNewRidesPostedByProviderOutputVO> issHelperGetBrandNewRidesPostedByProviderOutputVOList = issHelperService
 					.getBrandNewRidesPostedByProvider(issHelperGetBrandNewRidesPostedByProviderInputVO);
 
@@ -206,6 +218,7 @@ public class IssHelperController {
 		}
 
 		catch (Exception e) {
+			log.error("Get brand new Rides posted by provider InputVO " + issHelperGetBrandNewRidesPostedByProviderInputVO.toString());
 			return responseEntity = null;
 		}
 
@@ -220,12 +233,13 @@ public class IssHelperController {
 
 		try {
 			issHelperOutput = issHelperService.bookRideForStudent(issHelperBookRideForStudentInputVO);
-
+			log.info("Book ride for student InputVO " + issHelperBookRideForStudentInputVO.toString());
 			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.OK);
 			return responseEntity;
 		} catch (IssHelperException e) {
 
 			issHelperOutput.setMessage(e.getMessage());
+			log.error("Book ride for student InputVO " + issHelperBookRideForStudentInputVO.toString());
 			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.FORBIDDEN);
 			return responseEntity;
 
@@ -240,6 +254,7 @@ public class IssHelperController {
 		ResponseEntity<List<IssHelperGetAlreadyBookedRidesForStudentOutputVO>> responseEntity;
 
 		try {
+			log.info("Get already booked rides for student InputVO " + issHelperGetAlreadyBookedRidesForStudentInputVO.toString());
 			List<IssHelperGetAlreadyBookedRidesForStudentOutputVO> issHelperGetBrandNewRidesPostedByProviderOutputVOList = issHelperService
 					.getAlreadyBookedRidesForStudent(issHelperGetAlreadyBookedRidesForStudentInputVO);
 
@@ -249,6 +264,7 @@ public class IssHelperController {
 		}
 
 		catch (Exception e) {
+			log.error("Get already booked rides for student InputVO " + issHelperGetAlreadyBookedRidesForStudentInputVO.toString());
 			return responseEntity = null;
 		}
 
@@ -265,15 +281,14 @@ public class IssHelperController {
 		try {
 			issHelperOutput = issHelperService
 					.bookAlreadyBookedRidesForStudent(issHelperBookAlreadyBookedRidesForStudent);
-
+			log.info("Book already booked rides for Student InputVO " + issHelperBookAlreadyBookedRidesForStudent.toString());
 			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.OK);
 			return responseEntity;
 		} catch (IssHelperException e) {
-
 			issHelperOutput.setMessage(ApplicationsConstants.FAILURE);
 			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.FORBIDDEN);
 			return responseEntity;
-
+log.error("Book already booked rides for Student InputVO " + issHelperBookAlreadyBookedRidesForStudent.toString());
 		}
 
 	}

@@ -1,13 +1,15 @@
 package com.isshelper.dao;
 
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import com.isshelper.controller.IssHelperController;
 import com.isshelper.exception.IssHelperException;
 import com.isshelper.input.IssHelperBookAlreadyBookedRidesForStudent;
 import com.isshelper.input.IssHelperBookRideForStudentInputVO;
@@ -36,6 +38,8 @@ import com.isshelper.utils.ApplicationsConstants;
 @Repository
 public class IssHelperDaoImplementation {
 
+	private static final Logger log = LoggerFactory.getLogger(IssHelperDaoImplementation.class);
+
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 	@Autowired
@@ -57,7 +61,7 @@ public class IssHelperDaoImplementation {
 	public IssHelperOutput studentSignUp(IssHelperStudentSignUpInputVO issHelperStudentSignUpInputVO)
 			throws IssHelperException {
 		issHelperOutput = new IssHelperOutput();
-
+		String insertStudent = "";
 		try {
 			String university = "select U_Id from StudentHelper.dbo.University where StudentHelper.dbo.University.U_Name= '"
 					+ issHelperStudentSignUpInputVO.getUniversity() + "';";
@@ -69,12 +73,14 @@ public class IssHelperDaoImplementation {
 			student.setS_University(u_id);
 			student.setS_Phone(Long.parseLong(issHelperStudentSignUpInputVO.getPhone()));
 			student.setS_Password(passwordEncoder.encode(issHelperStudentSignUpInputVO.getPassword()));
-			String insertStudent = "Insert into StudentHelper.dbo.Student values('" + student.getS_ID() + "','"
+			insertStudent = "Insert into StudentHelper.dbo.Student values('" + student.getS_ID() + "','"
 					+ student.getS_Name() + "','" + student.getS_Email() + "','" + student.getS_Password() + "',"
 					+ student.getS_Phone() + "," + u_id + ")";
 
 			jdbcTemplate.execute(insertStudent);
+			log.info("Query for student signUp: " + insertStudent);
 		} catch (DataAccessException e) {
+			log.error("Student SignUp failed " + insertStudent);
 			throw new IssHelperException(ApplicationsConstants.STUDENT_SIGNUP_FAILURE);
 		}
 
@@ -86,7 +92,7 @@ public class IssHelperDaoImplementation {
 	public IssHelperOutput riderSignUp(IssHelperRiderSignUpInputVO issHelperRiderSignUpInputVO)
 			throws IssHelperException {
 		issHelperOutput = new IssHelperOutput();
-
+		String insertRideProvider = "";
 		try {
 			String university = "select U_Id from StudentHelper.dbo.University where StudentHelper.dbo.University.U_Name= '"
 					+ issHelperRiderSignUpInputVO.getUniversity() + "';";
@@ -103,7 +109,9 @@ public class IssHelperDaoImplementation {
 					+ riderProvider.getP_Email() + "'," + riderProvider.getP_University() + ")";
 
 			jdbcTemplate.execute(insertRideProvider);
+			log.info("Query for Ride Provider signUp: " + insertRideProvider);
 		} catch (DataAccessException e) {
+			log.error("Rider SignUp Failed" + insertRideProvider);
 			throw new IssHelperException(ApplicationsConstants.RIDER_SIGNUP_FAILURE);
 		}
 
@@ -115,6 +123,7 @@ public class IssHelperDaoImplementation {
 	public IssHelperOutput studentRideRequest(IssHelperStudentRideRequest issHelperStudentRideRequest)
 			throws IssHelperException {
 		issHelperOutput = new IssHelperOutput();
+		String insertRideRequestByStudent = "";
 		try {
 			rides_Requested_By_Student.setRRBS_Id(issHelperStudentRideRequest.getId());
 			rides_Requested_By_Student.setRRBS_S_Id(issHelperStudentRideRequest.getStudent_ID());
@@ -127,7 +136,7 @@ public class IssHelperDaoImplementation {
 			rides_Requested_By_Student.setRRBS_City(issHelperStudentRideRequest.getCity());
 			rides_Requested_By_Student.setRRBS_State(issHelperStudentRideRequest.getState());
 			rides_Requested_By_Student.setRRBS_Zip(issHelperStudentRideRequest.getZip());
-			String insertRideRequestByStudent = "insert into StudentHelper.dbo.Rides_Requested_By_Student values ('"
+			insertRideRequestByStudent = "insert into StudentHelper.dbo.Rides_Requested_By_Student values ('"
 					+ rides_Requested_By_Student.getRRBS_S_Id() + "','" + rides_Requested_By_Student.getRRBS_Date()
 					+ "','" + rides_Requested_By_Student.getRRBS_Time() + "','"
 					+ rides_Requested_By_Student.getRBBS_Air_Code() + "',"
@@ -137,10 +146,13 @@ public class IssHelperDaoImplementation {
 					+ "'," + rides_Requested_By_Student.getRRBS_Zip() + ")";
 
 			jdbcTemplate.execute(insertRideRequestByStudent);
+			
+			log.info("Student Ride Request " + insertRideRequestByStudent);
 
 			issHelperOutput.setMessage(ApplicationsConstants.SUCCESS);
 
 		} catch (Exception e) {
+			log.error("Student Ride Request Failed " + insertRideRequestByStudent);
 			throw new IssHelperException(ApplicationsConstants.STUDENT_REQUEST_RIDE_FAILURE);
 		}
 
@@ -150,6 +162,7 @@ public class IssHelperDaoImplementation {
 	public IssHelperOutput providerRidePost(IssHelperRidesPostedByProvider issHelperRidesPostedByProvider)
 			throws IssHelperException {
 		issHelperOutput = new IssHelperOutput();
+		String insertRidePostedByProvider = "";
 		try {
 			rides_Posted_By_Provider.setRPBP_Drivers_License(issHelperRidesPostedByProvider.getDriversLicense());
 			rides_Posted_By_Provider.setRPBP_Date(issHelperRidesPostedByProvider.getDate());
@@ -158,17 +171,20 @@ public class IssHelperDaoImplementation {
 			rides_Posted_By_Provider.setRPBP_Current(issHelperRidesPostedByProvider.getCurrent());
 			rides_Posted_By_Provider.setRPBP_Total(issHelperRidesPostedByProvider.getTotal());
 
-			String insertRidePostedByProvider = "insert into StudentHelper.dbo.Rides_Posted_By_Provider values ('"
+			insertRidePostedByProvider = "insert into StudentHelper.dbo.Rides_Posted_By_Provider values ('"
 					+ rides_Posted_By_Provider.getRPBP_Drivers_License() + "','"
 					+ rides_Posted_By_Provider.getRPBP_Date() + "','" + rides_Posted_By_Provider.getRPBP_Time() + "','"
 					+ rides_Posted_By_Provider.getRPBP_From() + "', " + rides_Posted_By_Provider.getRPBP_Current() + ","
 					+ rides_Posted_By_Provider.getRPBP_Total() + ")";
 
 			jdbcTemplate.execute(insertRidePostedByProvider);
+			
+			log.info("Ride Provider Posting Rides " + insertRidePostedByProvider);
 
 			issHelperOutput.setMessage(ApplicationsConstants.SUCCESS);
 
 		} catch (Exception e) {
+			log.error("Ride Provider Ride Posting Failed " + insertRidePostedByProvider);
 			throw new IssHelperException(ApplicationsConstants.RIDE_PROVIDER_POST_FAILURE);
 		}
 
