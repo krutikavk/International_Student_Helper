@@ -16,6 +16,7 @@ import com.isshelper.input.IssHelperGetBrandNewRidesPostedByProviderInputVO;
 import com.isshelper.input.IssHelperLoginInput;
 import com.isshelper.input.IssHelperProviderViewRidesPostedByStudentInputVO;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
+import com.isshelper.input.IssHelperRidesPostedAndAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperStudentRideRequest;
@@ -24,6 +25,8 @@ import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
 import com.isshelper.output.IssHelperGetBrandNewRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
+import com.isshelper.output.IssHelperProviderDashBoardRidesAcceptedByProviderOutputVO;
+import com.isshelper.output.IssHelperProviderDashBoardRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperProviderViewRidesPostedByStudentOutputVO;
 import com.isshelper.output.IssHelperRidesBookedByStudent;
 import com.isshelper.output.IssHelperRidesPostedByStudentOutputVO;
@@ -31,7 +34,7 @@ import com.isshelper.pojo.Student;
 
 @Service
 public class IssHelperService {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(IssHelperService.class);
 	@Autowired
 	IssHelperDaoImplementation issHelperDaoImplementation;
@@ -41,7 +44,7 @@ public class IssHelperService {
 
 	public IssHelperOutput studentSignUp(IssHelperStudentSignUpInputVO issHelperStudentSignUpInputVO)
 			throws IssHelperException {
-		
+
 		log.info("Student SignUp called");
 		return issHelperDaoImplementation.studentSignUp(issHelperStudentSignUpInputVO);
 
@@ -140,5 +143,19 @@ public class IssHelperService {
 
 		return issHelperDaoImplementation
 				.studentRidePostedAcceptedByProvider(issHelperStudentRideAcceptedByProviderInputVO);
+	}
+
+	public List<IssHelperProviderDashBoardRidesPostedByProviderOutputVO> providerDashBoardRidesPostedByProvider(
+			IssHelperRidesPostedAndAcceptedByProviderInputVO issHelperRidesPostedAndAcceptedByProviderInputVO) {
+		return issHelperDaoImplementation
+				.providerDashBoardRidesPostedByProvider(issHelperRidesPostedAndAcceptedByProviderInputVO);
+	}
+
+	public List<IssHelperProviderDashBoardRidesAcceptedByProviderOutputVO> providerDashBoardRidesAcceptedByProvider(
+			IssHelperRidesPostedAndAcceptedByProviderInputVO issHelperRidesPostedAndAcceptedByProviderInputVO) {
+
+		return issHelperDaoImplementation
+				.providerDashBoardRidesAcceptedByProvider(issHelperRidesPostedAndAcceptedByProviderInputVO);
+
 	}
 }

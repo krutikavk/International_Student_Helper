@@ -23,6 +23,7 @@ import com.isshelper.input.IssHelperLoginInput;
 import com.isshelper.input.IssHelperProviderViewRidesPostedByStudentInputVO;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
 import com.isshelper.input.IssHelperRidesBookedByStudentInputVO;
+import com.isshelper.input.IssHelperRidesPostedAndAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperStudentRideRequest;
@@ -31,6 +32,8 @@ import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
 import com.isshelper.output.IssHelperGetBrandNewRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
+import com.isshelper.output.IssHelperProviderDashBoardRidesAcceptedByProviderOutputVO;
+import com.isshelper.output.IssHelperProviderDashBoardRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperProviderViewRidesPostedByStudentOutputVO;
 import com.isshelper.output.IssHelperRidesBookedByStudent;
 import com.isshelper.output.IssHelperRidesPostedByStudentOutputVO;
@@ -324,8 +327,8 @@ public class IssHelperController {
 
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping("/StudentRideAcceptedByProvider")
-	public ResponseEntity<IssHelperOutput> studentRidePostedAcceptedByProvider(@RequestBody
-			IssHelperStudentRideAcceptedByProviderInputVO issHelperStudentRideAcceptedByProviderInputVO) {
+	public ResponseEntity<IssHelperOutput> studentRidePostedAcceptedByProvider(
+			@RequestBody IssHelperStudentRideAcceptedByProviderInputVO issHelperStudentRideAcceptedByProviderInputVO) {
 
 		ResponseEntity<IssHelperOutput> responseEntity;
 		issHelperOutput = new IssHelperOutput();
@@ -344,6 +347,48 @@ public class IssHelperController {
 					+ issHelperStudentRideAcceptedByProviderInputVO.toString());
 
 			return responseEntity;
+		}
+
+	}
+
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping("/Dashboard/RidesPostedByProvider")
+	public ResponseEntity<List<IssHelperProviderDashBoardRidesPostedByProviderOutputVO>> ridesPostedByProvider(
+			@RequestBody IssHelperRidesPostedAndAcceptedByProviderInputVO issHelperRidesPostedAndAcceptedByProviderInputVO) {
+
+		ResponseEntity<List<IssHelperProviderDashBoardRidesPostedByProviderOutputVO>> responseEntity;
+		try {
+			log.info("Rides Posted By Provider Input" + issHelperRidesPostedAndAcceptedByProviderInputVO.toString());
+			List<IssHelperProviderDashBoardRidesPostedByProviderOutputVO> issHelperProviderDashBoardRidesPostedByProviderOutputVOList = issHelperService
+					.providerDashBoardRidesPostedByProvider(issHelperRidesPostedAndAcceptedByProviderInputVO);
+			responseEntity = new ResponseEntity<List<IssHelperProviderDashBoardRidesPostedByProviderOutputVO>>(
+					issHelperProviderDashBoardRidesPostedByProviderOutputVOList, HttpStatus.OK);
+			return responseEntity;
+		} catch (Exception e) {
+			log.error("Rides Booked By Student " + issHelperRidesPostedAndAcceptedByProviderInputVO.toString());
+			return responseEntity = null;
+
+		}
+
+	}
+
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping("/Dashboard/RidePostedAcceptedByProvider")
+	public ResponseEntity<List<IssHelperProviderDashBoardRidesAcceptedByProviderOutputVO>> ridesAcceptedByProvider(
+			@RequestBody IssHelperRidesPostedAndAcceptedByProviderInputVO issHelperRidesPostedAndAcceptedByProviderInputVO) {
+
+		ResponseEntity<List<IssHelperProviderDashBoardRidesAcceptedByProviderOutputVO>> responseEntity;
+		try {
+			log.info("Rides Posted By Provider Input" + issHelperRidesPostedAndAcceptedByProviderInputVO.toString());
+			List<IssHelperProviderDashBoardRidesAcceptedByProviderOutputVO> IssHelperProviderDashBoardRidesAcceptedByProviderOutputVOList = issHelperService
+					.providerDashBoardRidesAcceptedByProvider(issHelperRidesPostedAndAcceptedByProviderInputVO);
+			responseEntity = new ResponseEntity<List<IssHelperProviderDashBoardRidesAcceptedByProviderOutputVO>>(
+					IssHelperProviderDashBoardRidesAcceptedByProviderOutputVOList, HttpStatus.OK);
+			return responseEntity;
+		} catch (Exception e) {
+			log.error("Rides Booked By Student " + issHelperRidesPostedAndAcceptedByProviderInputVO.toString());
+			return responseEntity = null;
+
 		}
 
 	}

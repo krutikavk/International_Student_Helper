@@ -20,6 +20,7 @@ import com.isshelper.input.IssHelperGetBrandNewRidesPostedByProviderInputVO;
 import com.isshelper.input.IssHelperLoginInput;
 import com.isshelper.input.IssHelperProviderViewRidesPostedByStudentInputVO;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
+import com.isshelper.input.IssHelperRidesPostedAndAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperStudentRideRequest;
@@ -28,6 +29,8 @@ import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
 import com.isshelper.output.IssHelperGetBrandNewRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperLoginOutput;
 import com.isshelper.output.IssHelperOutput;
+import com.isshelper.output.IssHelperProviderDashBoardRidesAcceptedByProviderOutputVO;
+import com.isshelper.output.IssHelperProviderDashBoardRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperProviderViewRidesPostedByStudentOutputVO;
 import com.isshelper.output.IssHelperRidesBookedByStudent;
 import com.isshelper.output.IssHelperRidesPostedByStudentOutputVO;
@@ -64,7 +67,7 @@ public class IssHelperDaoImplementation {
 	IssHelperLoginOutput issHelperLoginOutput;
 	IssHelperOutput issHelperOutput;
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 	public IssHelperOutput studentSignUp(IssHelperStudentSignUpInputVO issHelperStudentSignUpInputVO)
 			throws IssHelperException {
 		issHelperOutput = new IssHelperOutput();
@@ -96,7 +99,7 @@ public class IssHelperDaoImplementation {
 
 	}
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 	public IssHelperOutput riderSignUp(IssHelperRiderSignUpInputVO issHelperRiderSignUpInputVO)
 			throws IssHelperException {
 		issHelperOutput = new IssHelperOutput();
@@ -128,7 +131,7 @@ public class IssHelperDaoImplementation {
 
 	}
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 	public IssHelperOutput studentRideRequest(IssHelperStudentRideRequest issHelperStudentRideRequest)
 			throws IssHelperException {
 		issHelperOutput = new IssHelperOutput();
@@ -168,7 +171,7 @@ public class IssHelperDaoImplementation {
 		return issHelperOutput;
 	}
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 	public IssHelperOutput providerRidePost(IssHelperRidesPostedByProvider issHelperRidesPostedByProvider)
 			throws IssHelperException {
 		issHelperOutput = new IssHelperOutput();
@@ -201,7 +204,7 @@ public class IssHelperDaoImplementation {
 		return issHelperOutput;
 	}
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 	public IssHelperLoginOutput login(IssHelperLoginInput issHelperLoginInput) throws IssHelperException {
 		issHelperLoginOutput = new IssHelperLoginOutput();
 		try {
@@ -272,7 +275,7 @@ public class IssHelperDaoImplementation {
 		return issHelperLoginOutput;
 	}
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 	public List<IssHelperRidesBookedByStudent> ridesBookedByStudent(String student_ID) throws IssHelperException {
 
 		List<IssHelperRidesBookedByStudent> ridesBookedByStudentList = null;
@@ -338,7 +341,7 @@ public class IssHelperDaoImplementation {
 
 	}
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 	public IssHelperOutput bookRideForStudent(IssHelperBookRideForStudentInputVO issHelperBookRideForStudentInputVO)
 			throws IssHelperException {
 
@@ -368,7 +371,7 @@ public class IssHelperDaoImplementation {
 
 			String insertIntoStudentRideAvailed = "insert into StudentHelper.dbo.Student_Ride_Availed values('"
 					+ issHelperBookRideForStudentInputVO.getStudent_Id() + "'," + RideID + ",0)";
-			
+
 			log.info("Executing " + insertIntoStudentRideAvailed + " Successful");
 			jdbcTemplate.execute(insertIntoStudentRideAvailed);
 
@@ -436,7 +439,7 @@ public class IssHelperDaoImplementation {
 		return issHelperOutput;
 	}
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 	public List<IssHelperGetAlreadyBookedRidesForStudentOutputVO> getAlreadyBookedRidesForStudent(
 			IssHelperGetAlreadyBookedRidesForStudentInputVO issHelperGetAlreadyBookedRidesForStudentInputVO)
 			throws IssHelperException {
@@ -462,7 +465,7 @@ public class IssHelperDaoImplementation {
 		return issHelperGetAlreadyBookedRidesForStudentOutputVOList;
 	}
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 	public IssHelperOutput bookAlreadyBookedRidesForStudent(
 			IssHelperBookAlreadyBookedRidesForStudent issHelperBookAlreadyBookedRidesForStudent)
 			throws IssHelperException {
@@ -550,7 +553,7 @@ public class IssHelperDaoImplementation {
 		return issHelperOutput;
 	}
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 	public List<IssHelperProviderViewRidesPostedByStudentOutputVO> providerViewRidesPostedByStudent(
 			IssHelperProviderViewRidesPostedByStudentInputVO issHelperProviderViewRidesPostedByStudentByIntputVO)
 			throws IssHelperException {
@@ -579,7 +582,7 @@ public class IssHelperDaoImplementation {
 
 	}
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 	public IssHelperOutput studentRidePostedAcceptedByProvider(
 			IssHelperStudentRideAcceptedByProviderInputVO issHelperStudentRideAcceptedByProviderInputVO)
 			throws IssHelperException {
@@ -597,7 +600,7 @@ public class IssHelperDaoImplementation {
 			jdbcTemplate.execute(insertIntoRideQuery);
 
 			String getLatestRideIDQuery = "select top 1 R_Id from StudentHelper.dbo.Ride where R_Accepted_By =" + "'"
-					+ issHelperStudentRideAcceptedByProviderInputVO.getDrivers_Lisence() + "' order by R_Id desc" ;
+					+ issHelperStudentRideAcceptedByProviderInputVO.getDrivers_Lisence() + "' order by R_Id desc";
 
 			String getLatestRideID = jdbcTemplate.queryForObject(getLatestRideIDQuery, String.class);
 
@@ -669,4 +672,44 @@ public class IssHelperDaoImplementation {
 		return issHelperOutput;
 
 	}
+
+	public List<IssHelperProviderDashBoardRidesPostedByProviderOutputVO> providerDashBoardRidesPostedByProvider(
+			IssHelperRidesPostedAndAcceptedByProviderInputVO issHelperRidesPostedAndAcceptedByProviderInputVO) {
+		List<IssHelperProviderDashBoardRidesPostedByProviderOutputVO> issHelperProviderDashBoardRidesPostedByProviderOutputVOlist = null;
+
+		try {
+
+			String issHelperProviderDashBoardRidesPostedByProviderQuery = "Select RPBP_Id,	RPBP_Date, RPBP_Time, RPBP_From, RPBP_Current, RPBP_Total from StudentHelper.dbo.Rides_Posted_By_Provider where RPBP_Drivers_License = '"
+					+ issHelperRidesPostedAndAcceptedByProviderInputVO.getDriversLicense()
+					+ "'and RPBP_Date >= GETDATE()";
+
+			issHelperProviderDashBoardRidesPostedByProviderOutputVOlist = jdbcTemplate.query(
+					issHelperProviderDashBoardRidesPostedByProviderQuery,
+					new com.isshelper.utils.IssHelperProviderDashBoardRidesPostedByProviderRowMapper());
+
+		} catch (Exception e) {
+			return issHelperProviderDashBoardRidesPostedByProviderOutputVOlist;
+		}
+		return issHelperProviderDashBoardRidesPostedByProviderOutputVOlist;
+	}
+
+	public List<IssHelperProviderDashBoardRidesAcceptedByProviderOutputVO> providerDashBoardRidesAcceptedByProvider(
+			IssHelperRidesPostedAndAcceptedByProviderInputVO issHelperRidesPostedAndAcceptedByProviderInputVO) {
+		List<IssHelperProviderDashBoardRidesAcceptedByProviderOutputVO> IssHelperProviderDashBoardRidesAcceptedByProviderOutputVOlist = null;
+
+		try {
+
+			String issHelperProviderDashBoardRidesAcceptedByProviderQuery = "select distinct R_Id, R_Date, R_Time, R_Rating, R_Starting_Air_Code, R_Starting_Terminal, R_Current, R_Total, s.S_Name, s.S_Email from StudentHelper.dbo.Ride r join StudentHelper.dbo.Student_Ride_Availed sra on sra.SRA_Ride_Id = r.R_Id join StudentHelper.dbo.Student s on s.S_Id = sra.SRA_S_Id where r.R_Accepted_By = '"
+					+ issHelperRidesPostedAndAcceptedByProviderInputVO.getDriversLicense() + "'"
+					+ "and r.R_Date >= GETDATE()";
+			IssHelperProviderDashBoardRidesAcceptedByProviderOutputVOlist = jdbcTemplate.query(
+					issHelperProviderDashBoardRidesAcceptedByProviderQuery,
+					new com.isshelper.utils.IssHelperProviderDashBoardRidesAcceptedByProviderRowMapper());
+
+		} catch (Exception e) {
+			return IssHelperProviderDashBoardRidesAcceptedByProviderOutputVOlist;
+		}
+		return IssHelperProviderDashBoardRidesAcceptedByProviderOutputVOlist;
+	}
+
 }
