@@ -24,6 +24,7 @@ import com.isshelper.input.IssHelperProviderViewRidesPostedByStudentInputVO;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
 import com.isshelper.input.IssHelperRidesBookedByStudentInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
+import com.isshelper.input.IssHelperStudentRideAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
 import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
@@ -177,7 +178,6 @@ public class IssHelperController {
 		} catch (Exception e) {
 			log.error("Rides Booked By Student " + issHelperRidesBookedByStudentInputVO.toString());
 			return responseEntity = null;
-			
 
 		}
 
@@ -318,6 +318,32 @@ public class IssHelperController {
 
 		catch (Exception e) {
 			return responseEntity = null;
+		}
+
+	}
+
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping("/StudentRideAcceptedByProvider")
+	public ResponseEntity<IssHelperOutput> studentRidePostedAcceptedByProvider(@RequestBody
+			IssHelperStudentRideAcceptedByProviderInputVO issHelperStudentRideAcceptedByProviderInputVO) {
+
+		ResponseEntity<IssHelperOutput> responseEntity;
+		issHelperOutput = new IssHelperOutput();
+
+		try {
+			issHelperOutput = issHelperService
+					.studentRidePostedAcceptedByProvider(issHelperStudentRideAcceptedByProviderInputVO);
+			log.info("Book already booked rides for Student InputVO "
+					+ issHelperStudentRideAcceptedByProviderInputVO.toString());
+			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.OK);
+			return responseEntity;
+		} catch (IssHelperException e) {
+			issHelperOutput.setMessage(ApplicationsConstants.FAILURE);
+			responseEntity = new ResponseEntity<IssHelperOutput>(issHelperOutput, HttpStatus.FORBIDDEN);
+			log.error("Book already booked rides for Student InputVO "
+					+ issHelperStudentRideAcceptedByProviderInputVO.toString());
+
+			return responseEntity;
 		}
 
 	}

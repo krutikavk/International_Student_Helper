@@ -14,6 +14,7 @@ public class IssHelperGetBrandNewRidesPostedByProviderrRowMapper
 
 		IssHelperGetBrandNewRidesPostedByProviderOutputVO issHelperGetBrandNewRidesPostedByProviderOutputVO = new IssHelperGetBrandNewRidesPostedByProviderOutputVO();
 		issHelperGetBrandNewRidesPostedByProviderOutputVO.setRPBP_Id(rs.getInt("RPBP_Id"));
+		issHelperGetBrandNewRidesPostedByProviderOutputVO.setRPBP_Drivers_License(rs.getString("RPBP_Drivers_License"));
 		issHelperGetBrandNewRidesPostedByProviderOutputVO.setRPBP_Date(rs.getString("RPBP_Date"));
 		issHelperGetBrandNewRidesPostedByProviderOutputVO.setRPBP_Time(rs.getString("RPBP_Time"));
 		issHelperGetBrandNewRidesPostedByProviderOutputVO.setRPBP_From(rs.getString("RPBP_From"));

@@ -20,6 +20,10 @@ public class IssHelperProviderViewRidesPostedByStudentByRowMapper
 		issHelperProviderViewRidesPostedByStudentOutputVO.setRRBS_T_Number(rs.getInt("RRBS_T_Number"));
 		issHelperProviderViewRidesPostedByStudentOutputVO.setRRBS_Seats(rs.getInt("RRBS_Seats"));
 		issHelperProviderViewRidesPostedByStudentOutputVO.setRRBS_S_Id(rs.getString("RRBS_S_Id"));
+		issHelperProviderViewRidesPostedByStudentOutputVO.setRRBS_Street(rs.getString("RRBS_Street"));
+		issHelperProviderViewRidesPostedByStudentOutputVO.setRRBS_City(rs.getString("RRBS_City"));
+		issHelperProviderViewRidesPostedByStudentOutputVO.setRRBS_State(rs.getString("RRBS_State"));
+		issHelperProviderViewRidesPostedByStudentOutputVO.setRRBS_Zip(rs.getInt("RRBS_Zip"));
 
 		return issHelperProviderViewRidesPostedByStudentOutputVO;
 	}

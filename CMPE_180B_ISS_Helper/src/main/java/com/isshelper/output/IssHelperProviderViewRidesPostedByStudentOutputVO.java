@@ -10,6 +10,38 @@ public class IssHelperProviderViewRidesPostedByStudentOutputVO {
 	private String RRBS_Air_Code;
 	private int RRBS_T_Number;
 	private int RRBS_Seats;
+	private String RRBS_Street;
+	private String RRBS_City;
+	private String RRBS_State;
+	private int RRBS_Zip;
+	
+	
+	
+	
+	public String getRRBS_Street() {
+		return RRBS_Street;
+	}
+	public void setRRBS_Street(String rRBS_Street) {
+		RRBS_Street = rRBS_Street;
+	}
+	public String getRRBS_City() {
+		return RRBS_City;
+	}
+	public void setRRBS_City(String rRBS_City) {
+		RRBS_City = rRBS_City;
+	}
+	public String getRRBS_State() {
+		return RRBS_State;
+	}
+	public void setRRBS_State(String rRBS_State) {
+		RRBS_State = rRBS_State;
+	}
+	public int getRRBS_Zip() {
+		return RRBS_Zip;
+	}
+	public void setRRBS_Zip(int rRBS_Zip) {
+		RRBS_Zip = rRBS_Zip;
+	}
 	public int getRRBS_Id() {
 		return RRBS_Id;
 	}

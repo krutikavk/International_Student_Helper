@@ -2,14 +2,22 @@ package com.isshelper.output;
 
 public class IssHelperGetBrandNewRidesPostedByProviderOutputVO {
 	
-	
+	private String RPBP_Drivers_License;
 	private int RPBP_Id;
 	private String RPBP_Date;
 	private String RPBP_Time;
 	private String RPBP_From;
 	private int RPBP_Total;
+	
+	
 	public int getRPBP_Id() {
 		return RPBP_Id;
+	}
+	public String getRPBP_Drivers_License() {
+		return RPBP_Drivers_License;
+	}
+	public void setRPBP_Drivers_License(String rPBP_Drivers_License) {
+		RPBP_Drivers_License = rPBP_Drivers_License;
 	}
 	public void setRPBP_Id(int rPBP_Id) {
 		RPBP_Id = rPBP_Id;
@@ -40,9 +48,11 @@ public class IssHelperGetBrandNewRidesPostedByProviderOutputVO {
 	}
 	@Override
 	public String toString() {
-		return "IssHelperGetBrandNewRidesPostedByProviderOutputVO [RPBP_Id=" + RPBP_Id + ", RPBP_Date=" + RPBP_Date
-				+ ", RPBP_Time=" + RPBP_Time + ", RPBP_From=" + RPBP_From + ", RPBP_Total=" + RPBP_Total + "]";
+		return "IssHelperGetBrandNewRidesPostedByProviderOutputVO [RPBP_Drivers_License=" + RPBP_Drivers_License
+				+ ", RPBP_Id=" + RPBP_Id + ", RPBP_Date=" + RPBP_Date + ", RPBP_Time=" + RPBP_Time + ", RPBP_From="
+				+ RPBP_From + ", RPBP_Total=" + RPBP_Total + "]";
 	}
+	
 	
 	
 

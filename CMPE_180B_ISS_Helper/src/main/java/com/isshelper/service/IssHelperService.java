@@ -2,6 +2,8 @@ package com.isshelper.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import com.isshelper.input.IssHelperLoginInput;
 import com.isshelper.input.IssHelperProviderViewRidesPostedByStudentInputVO;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
+import com.isshelper.input.IssHelperStudentRideAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
 import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
@@ -28,6 +31,8 @@ import com.isshelper.pojo.Student;
 
 @Service
 public class IssHelperService {
+	
+	private static final Logger log = LoggerFactory.getLogger(IssHelperService.class);
 	@Autowired
 	IssHelperDaoImplementation issHelperDaoImplementation;
 
@@ -36,7 +41,8 @@ public class IssHelperService {
 
 	public IssHelperOutput studentSignUp(IssHelperStudentSignUpInputVO issHelperStudentSignUpInputVO)
 			throws IssHelperException {
-
+		
+		log.info("Student SignUp called");
 		return issHelperDaoImplementation.studentSignUp(issHelperStudentSignUpInputVO);
 
 	}
@@ -44,6 +50,7 @@ public class IssHelperService {
 	public IssHelperOutput riderSignUp(IssHelperRiderSignUpInputVO issHelperRiderSignUpInputVO)
 			throws IssHelperException {
 
+		log.info("Ride Provider SignUp called");
 		return issHelperDaoImplementation.riderSignUp(issHelperRiderSignUpInputVO);
 
 	}
@@ -51,6 +58,7 @@ public class IssHelperService {
 	public IssHelperOutput studentRideRequest(IssHelperStudentRideRequest issHelperStudentRideRequest)
 			throws IssHelperException {
 
+		log.info("Student Ride Request called");
 		return issHelperDaoImplementation.studentRideRequest(issHelperStudentRideRequest);
 
 	}
@@ -58,6 +66,7 @@ public class IssHelperService {
 	public IssHelperOutput providerRidePost(IssHelperRidesPostedByProvider issHelperRidesPostedByProvider)
 			throws IssHelperException {
 
+		log.info("Rides Posted by Provider called");
 		return issHelperDaoImplementation.providerRidePost(issHelperRidesPostedByProvider);
 
 	}
@@ -65,17 +74,20 @@ public class IssHelperService {
 	public List<IssHelperRidesPostedByStudentOutputVO> ridesPostedByStudent(String student_ID)
 			throws IssHelperException {
 
+		log.info("Rides Posted by Student called");
 		return issHelperDaoImplementation.ridesPostedByStudent(student_ID);
 	}
 
 	public IssHelperLoginOutput login(IssHelperLoginInput issHelperLoginInput) throws IssHelperException {
 
+		log.info("Login called");
 		return issHelperDaoImplementation.login(issHelperLoginInput);
 	}
 
 	public List<IssHelperRidesBookedByStudent> ridesBookedByStudent(String student_ID) throws IssHelperException
 
 	{
+		log.info("Rides Booked by Student called");
 		return issHelperDaoImplementation.ridesBookedByStudent(student_ID);
 	}
 
@@ -83,6 +95,7 @@ public class IssHelperService {
 			IssHelperGetBrandNewRidesPostedByProviderInputVO issHelperGetBrandNewRidesPostedByProviderInputVO)
 			throws IssHelperException {
 
+		log.info("Brand New Rides Posted by Provider called");
 		return issHelperDaoImplementation
 				.getBrandNewRidesPostedByProvider(issHelperGetBrandNewRidesPostedByProviderInputVO);
 	}
@@ -90,6 +103,7 @@ public class IssHelperService {
 	public IssHelperOutput bookRideForStudent(IssHelperBookRideForStudentInputVO issHelperBookRideForStudentInputVO)
 			throws IssHelperException {
 
+		log.info("Book Rides for Student called");
 		return issHelperDaoImplementation.bookRideForStudent(issHelperBookRideForStudentInputVO);
 	}
 
@@ -97,6 +111,7 @@ public class IssHelperService {
 			IssHelperGetAlreadyBookedRidesForStudentInputVO issHelperGetAlreadyBookedRidesForStudentInputVO)
 			throws IssHelperException {
 
+		log.info("Get already Booked Rides by Student called");
 		return issHelperDaoImplementation
 				.getAlreadyBookedRidesForStudent(issHelperGetAlreadyBookedRidesForStudentInputVO);
 	}
@@ -105,6 +120,7 @@ public class IssHelperService {
 			IssHelperBookAlreadyBookedRidesForStudent issHelperBookAlreadyBookedRidesForStudent)
 			throws IssHelperException {
 
+		log.info("Book Already Booked Rides called");
 		return issHelperDaoImplementation.bookAlreadyBookedRidesForStudent(issHelperBookAlreadyBookedRidesForStudent);
 	}
 
@@ -112,9 +128,17 @@ public class IssHelperService {
 			IssHelperProviderViewRidesPostedByStudentInputVO issHelperProviderViewRidesPostedByStudentByIntputVO)
 			throws IssHelperException {
 
+		log.info("Ride Provider Viewing Rides Posted by Student called");
 		return issHelperDaoImplementation
 				.providerViewRidesPostedByStudent(issHelperProviderViewRidesPostedByStudentByIntputVO);
 
 	}
 
+	public IssHelperOutput studentRidePostedAcceptedByProvider(
+			IssHelperStudentRideAcceptedByProviderInputVO issHelperStudentRideAcceptedByProviderInputVO)
+			throws IssHelperException {
+
+		return issHelperDaoImplementation
+				.studentRidePostedAcceptedByProvider(issHelperStudentRideAcceptedByProviderInputVO);
+	}
 }
