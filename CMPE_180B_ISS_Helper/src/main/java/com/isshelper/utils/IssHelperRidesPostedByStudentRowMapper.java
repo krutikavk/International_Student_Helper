@@ -1,3 +1,4 @@
+//SJSU CMPE 138 Fall2019 TEAM8
 package com.isshelper.utils;
 
 import java.sql.ResultSet;
@@ -20,6 +21,7 @@ public class IssHelperRidesPostedByStudentRowMapper implements RowMapper<IssHelp
 		issHelperRidesPostedByStudentOutputVO.setRRBS_Seats(rs.getInt("RRBS_Seats"));
 		issHelperRidesPostedByStudentOutputVO.setRRBS_City(rs.getString("RRBS_City"));
 		issHelperRidesPostedByStudentOutputVO.setRRBS_State(rs.getString("RRBS_State"));
+		issHelperRidesPostedByStudentOutputVO.setRRBS_Street(rs.getString("RRBS_Street"));
 		issHelperRidesPostedByStudentOutputVO.setRRBS_Zip(rs.getInt("RRBS_Zip"));
 
 		return issHelperRidesPostedByStudentOutputVO;

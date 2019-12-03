@@ -1,3 +1,6 @@
+
+
+//SJSU CMPE 138 Fall2019 TEAM8
 package com.isshelper.dao;
 
 import java.util.List;
@@ -20,11 +23,13 @@ import com.isshelper.input.IssHelperGetBrandNewRidesPostedByProviderInputVO;
 import com.isshelper.input.IssHelperLoginInput;
 import com.isshelper.input.IssHelperProviderViewRidesPostedByStudentInputVO;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
+import com.isshelper.input.IssHelperRidesBookedByStudentInputVO;
 import com.isshelper.input.IssHelperRidesPostedAndAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
+import com.isshelper.output.IssHelperAppartmentsOutputVO;
 import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
 import com.isshelper.output.IssHelperGetBrandNewRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperLoginOutput;
@@ -323,7 +328,7 @@ public class IssHelperDaoImplementation {
 		String getBrandNewRidesPostedByProviderquery = "";
 		try {
 
-			getBrandNewRidesPostedByProviderquery = "select RPBP_Id, RPBP_Date, RPBP_Time, RPBP_From, RPBP_Total from StudentHelper.dbo.Rides_Posted_By_Provider where RPBP_Date ="
+			getBrandNewRidesPostedByProviderquery = "select RPBP_Id, RPBP_Drivers_License, RPBP_Date, RPBP_Time, RPBP_From, RPBP_Total from StudentHelper.dbo.Rides_Posted_By_Provider where RPBP_Date ="
 					+ "'" + issHelperGetBrandNewRidesPostedByProviderInputVO.getDate() + "'and RPBP_Time >='"
 					+ issHelperGetBrandNewRidesPostedByProviderInputVO.getLanding_time() + "'and RPBP_From='"
 					+ issHelperGetBrandNewRidesPostedByProviderInputVO.getLanding_airport() + "'and RPBP_Total>="
@@ -528,8 +533,9 @@ public class IssHelperDaoImplementation {
 					.query(getStudentDetailsQuery, new com.isshelper.utils.IssHelperStudentRowMapper()).get(0);
 
 			IssHelperMailNotificationHelper.sendEmailtoStudent(student.getS_Email(), rideProvider.getP_Email(),
-					issHelperBookAlreadyBookedRidesForStudent.getState() + " " + " "
-							+ issHelperBookAlreadyBookedRidesForStudent.getCity(),
+					issHelperBookAlreadyBookedRidesForStudent.getStreet() + " "
+							+ issHelperBookAlreadyBookedRidesForStudent.getCity() + " " + " "
+							+ issHelperBookAlreadyBookedRidesForStudent.getState() + " ",
 					student.getS_Phone(), rideProvider.getP_Phone(), rideProvider.getP_Name(), student.getS_Name(),
 					issHelperBookAlreadyBookedRidesForStudent.getR_Date(),
 					issHelperBookAlreadyBookedRidesForStudent.getR_Time(),
@@ -537,8 +543,9 @@ public class IssHelperDaoImplementation {
 					issHelperBookAlreadyBookedRidesForStudent.getZip());
 
 			IssHelperMailNotificationHelper.sendEmailtoRideProvider(student.getS_Email(), rideProvider.getP_Email(),
-					issHelperBookAlreadyBookedRidesForStudent.getState() + " " + " "
-							+ issHelperBookAlreadyBookedRidesForStudent.getCity(),
+					issHelperBookAlreadyBookedRidesForStudent.getStreet() + " "
+							+ issHelperBookAlreadyBookedRidesForStudent.getCity() + " " + " "
+							+ issHelperBookAlreadyBookedRidesForStudent.getState() + " ",
 					student.getS_Phone(), rideProvider.getP_Phone(), rideProvider.getP_Name(), student.getS_Name(),
 					issHelperBookAlreadyBookedRidesForStudent.getR_Date(),
 					issHelperBookAlreadyBookedRidesForStudent.getR_Time(),
@@ -710,6 +717,23 @@ public class IssHelperDaoImplementation {
 			return IssHelperProviderDashBoardRidesAcceptedByProviderOutputVOlist;
 		}
 		return IssHelperProviderDashBoardRidesAcceptedByProviderOutputVOlist;
+	}
+
+	public List<IssHelperAppartmentsOutputVO> viewAppartments(
+			IssHelperRidesBookedByStudentInputVO issHelperAppartmentInputVO) {
+		List<IssHelperAppartmentsOutputVO> IssHelperAppartmentsOutputVOList = null;
+
+		try {
+
+			String viewAppartmentsQuery = "select A_Name,A_Distance,A_Website,A_Street,A_City,A_State,A_Zip from StudentHelper.dbo.Student S join StudentHelper.dbo.Apartment A on S.S_University = A.A_U_Id where S.S_Id='"
+					+ issHelperAppartmentInputVO.getStudent_ID() + "'";
+			IssHelperAppartmentsOutputVOList = jdbcTemplate.query(viewAppartmentsQuery,
+					new com.isshelper.utils.IssHelperAppartmentRowMapper());
+
+		} catch (Exception e) {
+			return IssHelperAppartmentsOutputVOList;
+		}
+		return IssHelperAppartmentsOutputVOList;
 	}
 
 }

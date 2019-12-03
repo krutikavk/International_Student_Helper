@@ -1,5 +1,5 @@
 package com.isshelper.service;
-
+//SJSU CMPE 138 Fall2019 TEAM8
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,11 +16,13 @@ import com.isshelper.input.IssHelperGetBrandNewRidesPostedByProviderInputVO;
 import com.isshelper.input.IssHelperLoginInput;
 import com.isshelper.input.IssHelperProviderViewRidesPostedByStudentInputVO;
 import com.isshelper.input.IssHelperRiderSignUpInputVO;
+import com.isshelper.input.IssHelperRidesBookedByStudentInputVO;
 import com.isshelper.input.IssHelperRidesPostedAndAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
+import com.isshelper.output.IssHelperAppartmentsOutputVO;
 import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
 import com.isshelper.output.IssHelperGetBrandNewRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperLoginOutput;
@@ -158,4 +160,11 @@ public class IssHelperService {
 				.providerDashBoardRidesAcceptedByProvider(issHelperRidesPostedAndAcceptedByProviderInputVO);
 
 	}
+
+	public List<IssHelperAppartmentsOutputVO> viewAppartments(IssHelperRidesBookedByStudentInputVO issHelperAppartmentInputVO) {
+
+		return issHelperDaoImplementation.viewAppartments(issHelperAppartmentInputVO);
+
+	}
+
 }

@@ -1,5 +1,5 @@
 package com.isshelper.pojo;
-
+//SJSU CMPE 138 Fall2019 TEAM8
 public class Amenities {
 	private int A_U_Id;
 	private String A_Name;

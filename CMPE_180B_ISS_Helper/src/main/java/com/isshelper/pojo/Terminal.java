@@ -1,5 +1,5 @@
 package com.isshelper.pojo;
-
+//SJSU CMPE 138 Fall2019 TEAM8
 public class Terminal {
 
 	private String T_Air_code;

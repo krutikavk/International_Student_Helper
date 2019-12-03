@@ -1,5 +1,5 @@
 package com.isshelper.pojo;
-
+//SJSU CMPE 138 Fall2019 TEAM8
 public class Nearby_Airports {
 	private int N_U_Id; 			//foreign key references University(U_Id),
 	private String N_A_Code; 		//varchar(4) foreign key references Airport(Air_Code),

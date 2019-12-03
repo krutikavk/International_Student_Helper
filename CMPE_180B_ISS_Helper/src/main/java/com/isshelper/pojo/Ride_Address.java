@@ -1,5 +1,5 @@
 package com.isshelper.pojo;
-
+//SJSU CMPE 138 Fall2019 TEAM8
 public class Ride_Address {
 	//kk=does RA_Id hold address number? check
 	private int RA_Id;					// IDENTITY(1,1) PRIMARY KEY,

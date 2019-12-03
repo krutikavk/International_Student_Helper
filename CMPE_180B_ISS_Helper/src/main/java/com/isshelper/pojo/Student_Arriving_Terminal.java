@@ -1,6 +1,6 @@
 package com.isshelper.pojo;
 import java.util.Date;
-
+//SJSU CMPE 138 Fall2019 TEAM8
 public class Student_Arriving_Terminal {
 	private int SAT_S_Id;				//foreign key references Student(S_Id),
 	private String SAT_Air_Code; 		// varchar(4) not null,

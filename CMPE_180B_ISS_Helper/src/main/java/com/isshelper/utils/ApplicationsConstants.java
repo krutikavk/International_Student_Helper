@@ -1,5 +1,5 @@
 package com.isshelper.utils;
-
+//SJSU CMPE 138 Fall2019 TEAM8
 public final class ApplicationsConstants {
 
 	public static final String SUCCESS = "S";

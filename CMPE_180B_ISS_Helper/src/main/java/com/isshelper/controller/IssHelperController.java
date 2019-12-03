@@ -1,3 +1,5 @@
+
+//SJSU CMPE 138 Fall2019 TEAM8
 package com.isshelper.controller;
 
 import java.util.List;
@@ -28,6 +30,7 @@ import com.isshelper.input.IssHelperRidesPostedByProvider;
 import com.isshelper.input.IssHelperStudentRideAcceptedByProviderInputVO;
 import com.isshelper.input.IssHelperStudentRideRequest;
 import com.isshelper.input.IssHelperStudentSignUpInputVO;
+import com.isshelper.output.IssHelperAppartmentsOutputVO;
 import com.isshelper.output.IssHelperGetAlreadyBookedRidesForStudentOutputVO;
 import com.isshelper.output.IssHelperGetBrandNewRidesPostedByProviderOutputVO;
 import com.isshelper.output.IssHelperLoginOutput;
@@ -41,6 +44,7 @@ import com.isshelper.service.IssHelperService;
 import com.isshelper.utils.ApplicationsConstants;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "/IssHelper")
 public class IssHelperController {
 
@@ -387,6 +391,27 @@ public class IssHelperController {
 			return responseEntity;
 		} catch (Exception e) {
 			log.error("Rides Booked By Student " + issHelperRidesPostedAndAcceptedByProviderInputVO.toString());
+			return responseEntity = null;
+
+		}
+
+	}
+
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping("/ViewAppartments")
+	public ResponseEntity<List<IssHelperAppartmentsOutputVO>> viewAppartments(
+			@RequestBody IssHelperRidesBookedByStudentInputVO issHelperAppartmentInputVO) {
+
+		ResponseEntity<List<IssHelperAppartmentsOutputVO>> responseEntity;
+		try {
+			log.info("Appartment Input" + issHelperAppartmentInputVO.toString());
+			List<IssHelperAppartmentsOutputVO> IssHelperAppartmentsOutputVOList = issHelperService
+					.viewAppartments(issHelperAppartmentInputVO);
+			responseEntity = new ResponseEntity<List<IssHelperAppartmentsOutputVO>>(IssHelperAppartmentsOutputVOList,
+					HttpStatus.OK);
+			return responseEntity;
+		} catch (Exception e) {
+			log.error("Appartments list for Student ");
 			return responseEntity = null;
 
 		}

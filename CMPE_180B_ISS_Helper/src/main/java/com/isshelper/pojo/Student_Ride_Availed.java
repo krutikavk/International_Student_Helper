@@ -1,5 +1,5 @@
 package com.isshelper.pojo;
-
+//SJSU CMPE 138 Fall2019 TEAM8
 public class Student_Ride_Availed {
 	private int SRA_S_Id; 					//foreign key references Student(S_Id),
 	private int SRA_Ride_Id; 				//foreign key references Ride(R_Id),

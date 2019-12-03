@@ -1,7 +1,5 @@
 package com.isshelper.pojo;
-
-import org.springframework.stereotype.Component;
-
+//SJSU CMPE 138 Fall2019 TEAM8
 public class University {
 	private int U_Id;
 	private String U_Name;
